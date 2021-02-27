@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout as auth_logout
 
 # Create your views here.
 def index(request):
@@ -19,11 +19,19 @@ def auth(request):
         #The user is in the database, log them in
         login(request,verify)
         print("Logged in successfully")
+        context={
+            'user':verify,
+        }
+        return render(request,'changed/home.html',context)
     else:
         #The user is not in the database. Register them by creating a new user and adding to the database
-        user = User.objects.create_user(username=username,password=password)
+        #user = User.objects.create_user(username=username,password=password)
+        return HttpResponse("TESTINGTESTING123")
 
-    return HttpResponse("asdasdasd")
+    
+def logout(request):
+    auth_logout(request)
+    return redirect('changed:index')
 
 def signup(request):
     return render(request,'changed/signup.html')
@@ -48,4 +56,4 @@ def registerUser(request):
         user = User.objects.create_user(username=username,password=password)
 
 
-    return HttpResponse("testingtesting123")
+    return redirect('changed:index')

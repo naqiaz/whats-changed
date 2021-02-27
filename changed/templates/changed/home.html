@@ -6,7 +6,11 @@
     <title>Document</title>
 </head>
 <body>
-    Successfully logged in!
+    Successfully logged in with username = {{user.username}}!
+    <form action="{% url 'changed:logout'%}", method="POST">
+        {% csrf_token %}
+        <button>Logout</button>
+    </form>
     
 </body>
 </html>
