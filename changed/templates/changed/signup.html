@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Signup:
+    <!-- The signup page will send the POST request to a helper URL called register
+
+        Register will create a new user and log in to the home page
+    -->
+    <form action="{% url 'changed:register'%}", method="POST">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text", id="username", name="username">
+        <br>
+        <label for="password">Password:</label>
+        <input type="text", id="password", name="password">
+        <input type="submit", value="Signup">
+    </form>
+    
+</body>
+</html>
