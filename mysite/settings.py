@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #after this line are the dependencies for all-auth
     'django.contrib.sites',
     'allauth', 
     'allauth.account',
@@ -114,7 +115,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SITE_ID=1
+SITE_ID=3
 LOGIN_REDIRECT_URL='/'
 
 SOCIALACCOUNT_PROVIDERS = {

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load socialaccount %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +17,7 @@
         <input type="text", id="password", name="password">
         <input type="submit", value="Login">
     </form>
+    <a href="{% provider_login_url 'google' %}">Login With Google</a>
     <a href="{% url 'changed:signup' %}">Click here to signup</a>
 
     
