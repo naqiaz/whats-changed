@@ -7,18 +7,23 @@
     <title></title>
 </head>
 <body>
-    Login here through our normal system:
-    <form action="{% url 'changed:authenticate'%}", method="POST">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text", id="username", name="username">
-        <br>
-        <label for="password">Password:</label>
-        <input type="text", id="password", name="password">
-        <input type="submit", value="Login">
-    </form>
-    <a href="{% provider_login_url 'google' %}">Login With Google</a>
-    <a href="{% url 'changed:signup' %}">Click here to signup</a>
+    <!--You can only already be authenticated if you're using Google-->
+    {% if user.is_authenticated %}
+        {% include 'changed/home.html'%}
+    {% else %}
+        Login here through our normal system:
+        <form action="{% url 'changed:authenticate'%}", method="POST">
+            {% csrf_token %}
+            <label for="username">Username:</label>
+            <input type="text", id="username", name="username">
+            <br>
+            <label for="password">Password:</label>
+            <input type="text", id="password", name="password">
+            <input type="submit", value="Login">
+        </form>
+        <a href="{% provider_login_url 'google' %}">Login With Google</a>
+        <a href="{% url 'changed:signup' %}">Click here to signup</a>
+    {% endif %}
 
     
     
