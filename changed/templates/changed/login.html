@@ -1,32 +1,87 @@
 <!DOCTYPE html>
 {% load socialaccount %}
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Login</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 </head>
-<body>
-    <!--You can only already be authenticated if you're using Google-->
-    {% if user.is_authenticated %}
-        {% include 'changed/home.html'%}
-    {% else %}
-        Login here through our normal system:
-        <form action="{% url 'changed:authenticate'%}", method="POST">
-            {% csrf_token %}
-            <label for="username">Username:</label>
-            <input type="text", id="username", name="username">
-            <br>
-            <label for="password">Password:</label>
-            <input type="text", id="password", name="password">
-            <input type="submit", value="Login">
-        </form>
-        <a href="{% provider_login_url 'google' %}">Login With Google</a>
-        <a href="{% url 'changed:signup' %}">Click here to signup</a>
-    {% endif %}
 
-    
-    
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #465C69;">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="color:white">
+            <img src="https://live.staticflickr.com/65535/51031464312_85b95e8be5_o.png" width="27" height="27"
+                class="d-inline-block align-top">
+            What's Changed?
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">Home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
+<body class="d-flex flex-column min-vh-100">
+    <div class="wrapper flex-grow-1">
+        <div class="container">
+            <!--You can only already be authenticated if you're using Google-->
+            {% if user.is_authenticated %}
+            {% include 'changed/home.html'%}
+            {% else %}
+            <div class="card bg-light mx-auto row justify-content-md-center" style="margin: 4vh; width: 30vw;">
+                <div class=" card-header text-center" style="background-color: rgb(151, 151, 151); color:white">
+                    Login to access your account:
+                </div>
+                <form action="{% url 'changed:authenticate'%}" , method="POST" class="text-center"
+                    style="margin-top:15px; margin-bottom: 15px;">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" , id="username" , name="username">
+                    </div>
+                    <div class="form-group" style="margin-top:1vh; margin-bottom:1vh;">
+                        <label for="password">Password:</label>
+                        <input type="password" , id="password" , name="password">
+                    </div>
+                    <div>
+                        <button type="submit" value="Login" class="btn"
+                            style="background-color:rgb(151, 151, 151); color:white">Login</button>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <a href="{% provider_login_url 'google' %}" style="color: rgb(81, 133, 168);">Login With Google</a>
+                    <br>
+                    <a href="{% url 'changed:signup' %}" style="color:rgb(81, 133, 168)">Click here to sign up</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Optional JavaScript -->
+            <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+        </div>
+    </div>
 </body>
+
 </html>

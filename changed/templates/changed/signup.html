@@ -1,26 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    Signup:
-    <!-- The signup page will send the POST request to a helper URL called register
 
-        Register will create a new user and log in to the home page
-    -->
-    <form action="{% url 'changed:register'%}", method="POST">
-        {% csrf_token %}
-        <label for="username">Username:</label>
-        <input type="text", id="username", name="username">
-        <br>
-        <label for="password">Password:</label>
-        <input type="text", id="password", name="password">
-        <input type="submit", value="Signup">
-    </form>
-    <a href="{% url 'changed:index' %}">Click here to go back to login</a>
-    
+<head>
+    <title>Sign Up</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #465C69;">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="color:white">
+            <img src="https://live.staticflickr.com/65535/51031464312_85b95e8be5_o.png" width="27" height="27"
+                class="d-inline-block align-top">
+            What's Changed?
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link">Home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<body class="d-flex flex-column min-vh-100">
+    <div class="wrapper flex-grow-1">
+        <div class="container">
+            <div class="card bg-light mx-auto row justify-content-md-center" style="margin: 4vh; width: 30vw;">
+                <div class=" card-header text-center" style="background-color: rgb(151, 151, 151); color:white">
+                    Create an account:
+                </div>
+                <!-- The signup page will send the POST request to a helper URL called register
+                Register will create a new user and log in to the home page-->
+                <form action="{% url 'changed:register'%}" , method="POST" class="text-center"
+                    style="margin-top:15px; margin-bottom: 15px;">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for=" username">Username:</label>
+                        <input type="text" , id="username" , name="username">
+                    </div>
+                    <div class="form-group" style="margin-top:1vh; margin-bottom:1vh;">
+                        <label for="password">Password:</label>
+                        <input type="text" , id="password" , name="password">
+                    </div>
+                    <div>
+                        <button type="submit" value="Signup" class="btn"
+                            style="background-color:rgb(151, 151, 151); color:white">Sign Up</button>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <a href="{% url 'changed:index' %}" style="color:rgb(81, 133, 168)">Click here to go back to
+                        login</a>
+                </div>
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                    crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                    crossorigin="anonymous"></script>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
