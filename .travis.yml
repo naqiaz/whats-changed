@@ -1,0 +1,14 @@
+language: python
+python:
+- '3.8'
+install:
+- pip install -r requirements.txt
+script:
+- python manage.py test
+deploy:
+  provider: heroku
+  api_key:
+    secure: UcssygR404lumutmyznLSF71jDVOhoRHS6scLaK43zEu4WSzZF2zIlzR3OmsgTnb9xkWuDS3JNUaGBeMSNMeQG7zPLHx+w2ebSLMhO9HB84eSdR61Fg2wJDX3qSlo+BjvJ9gl8AIUqBslXdxU2tPB2oNuRuznPc+FNkDxeRqxhm8xHVpBokmn5Sw0O0yiY3XVX/CaqVJJPXH/xT9B4PpFYOu2WmXxQ4sM9EShEVtbuX7LVYHIWuHA1X+md6/QzPGNW+rk4XzcWAX9Zpc21UzbRL0SKrO4xpKlwFnRpq95IV6DcdRAP4A898JPOeIqQT4uykqWAfL3c5aP4CoztqLmEn5t1VKEEsgYq0DIBF+MjxUINw47JxpzSYwB2kIS7cydqj6lOjUnQ9fBXVWNVNjmtbKqhkiwaoJ4NeMiEyGTQokWTU/VjNLBPFrdGuuLVyjxrmx7yBSZzVZc9OQy3U2cBbzdkExeUcK/FpTz6v2XUyrIVuvuf9hO8gfFxRmvAOBcsbkffEsclaMuzSoKLIjXvI+wtydcglrnhu3j7KyJ9ErGNiCFXKOxZcO+W7Di5+l+H8sZGEfxNEJKAchmghFK/KDLraRHqlp9lzycKBywA5yOtLIlJ3oawA4SqmcVYOOUhhGEJfNRULfg/CCRNEUGztEzactqVgYIQ92U4+gMLw=
+  app: fathomless-oasis-84220
+  on:
+    repo: uva-cs3240-s21/project-b-25
