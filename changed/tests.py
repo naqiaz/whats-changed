@@ -9,9 +9,10 @@ class AuthTestCase(TestCase):
         user = User.objects.create_user(username='TestUsername',password= 'TestPassword')
 
 
-
+    '''
+    Test to check whether the login (not google auth) is successful
+    '''
     def test_login(self):
-        #test_user = User.objects.create(username="TestUsername", password = "TestPassword")
         user = User.objects.get(username='TestUsername')
         data = {
             'username': user.username,
@@ -19,4 +20,21 @@ class AuthTestCase(TestCase):
         }
         response = self.client.post(reverse('changed:authenticate'),data)
         self.assertTrue(user.is_authenticated)
+    '''
+        Successful test is user can logout successfully
+    '''
+    def test_logout(self):
+        user = User.objects.get(username='TestUsername')
+        data = {
+            'username': user.username,
+            'password': user.password,
+        }
+        #login
+        response = self.client.post(reverse('changed:authenticate'),data)
+        #logout
+        try:
+            logout_res = self.client.post(reverse('changed:logout'))
+            self.assertTrue(user.is_authenticated)
+        except:
+            return False
         
