@@ -12,3 +12,5 @@ deploy:
   app: fathomless-oasis-84220
   on:
     repo: uva-cs3240-s21/project-b-25
+  services:
+  - postgresql
