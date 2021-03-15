@@ -19,8 +19,8 @@ class AuthTestCase(TestCase):
             'password': user.password,
         }
         response = self.client.post(reverse('changed:authenticate'),data) 
-        #self.assertTrue(user.is_authenticated)
-        self.assertTrue(true)
+        self.assertTrue(user.is_authenticated)
+        #self.assertTrue(true)
     '''
         Successful test is user can logout successfully
     '''
@@ -35,8 +35,8 @@ class AuthTestCase(TestCase):
         #logout
         try:
             logout_res = self.client.post(reverse('changed:logout'))
-            #self.assertTrue(user.is_authenticated) 
-             self.assertTrue(true)
+            self.assertTrue(user.is_authenticated) 
+            #self.assertTrue(true)
         except:
             return False
         
