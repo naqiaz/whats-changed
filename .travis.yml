@@ -2,7 +2,9 @@ language: python
 python:
 - '3.8'
 install:
-- pip install -r requirements.txt
+- pip install -r requirements-travis.txt
+before_script:
+  - psql -c "CREATE DATABASE mydb;" -U postgres
 script:
 - python manage.py test
 deploy:
