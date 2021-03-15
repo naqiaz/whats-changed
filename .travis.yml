@@ -1,6 +1,8 @@
 language: python
 python:
 - '3.8'
+services:
+- postgresql
 install:
 - pip install -r requirements-travis.txt
 before_script:
