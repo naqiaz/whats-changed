@@ -1,0 +1,40 @@
+<head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #465C69;">
+    <div class="container-fluid">
+        <a class="navbar-brand" style="color:white">
+            <img src="https://live.staticflickr.com/65535/51031464312_85b95e8be5_o.png" width="27" height="27"
+                 class="d-inline-block align-top">
+            What's Changed?
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'changed:index' %}">Home<span class="sr-only">(current)</span></a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'changed:logout' %}">Logout<span class="sr-only">(current)</span></a>
+                </li>
+                {% else %}
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'changed:index' %}">Login<span class="sr-only">(current)</span></a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+{% block content %}
+{% endblock %}
+
+<footer class="bg-light text-center text-lg-start fixed-bottom">
+    <div class="text-center p-3" style="background-color:#465C69; color:white">
+        &copy; 2021 B-25
+    </div>
+</footer>

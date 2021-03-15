@@ -1,7 +1,6 @@
-<!DOCTYPE html>
+﻿{% extends 'changed/base_html.html' %}
 {% load socialaccount %}
-<html lang="en">
-
+{% block content %}
 <head>
     <title>Login</title>
     <!-- Required meta tags -->
@@ -9,44 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </head>
-
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #465C69;">
-    <div class="container-fluid">
-        <a class="navbar-brand" style="color:white">
-            <img src="https://live.staticflickr.com/65535/51031464312_85b95e8be5_o.png" width="27" height="27"
-                class="d-inline-block align-top">
-            What's Changed?
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link">Home</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
 
 <body class="d-flex flex-column min-vh-100">
     <div class="wrapper flex-grow-1">
         <div class="container">
             <!--You can only already be authenticated if you're using Google-->
-            {% if user.is_authenticated %}
-            {% include 'changed/home.html'%}
-            {% else %}
             <div class="card bg-light mx-auto row justify-content-md-center" style="margin: 4vh; width: 30vw;">
                 <div class=" card-header text-center" style="background-color: rgb(151, 151, 151); color:white">
                     Login to access your account:
                 </div>
                 <form action="{% url 'changed:authenticate'%}" , method="POST" class="text-center"
-                    style="margin-top:15px; margin-bottom: 15px;">
+                      style="margin-top:15px; margin-bottom: 15px;">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="username">Username:</label>
@@ -58,35 +33,38 @@
                     </div>
                     <div>
                         <button type="submit" value="Login" class="btn"
-                            style="background-color:rgb(151, 151, 151); color:white">Login</button>
+                                style="background-color:rgb(151, 151, 151); color:white">
+                            Login
+                        </button>
                     </div>
                 </form>
                 <div class="text-center">
-                    <a href="{% provider_login_url 'google' %}" style="color: rgb(81, 133, 168);">Login With Google</a>
-                    <br>
+                    <div class="col s12 m6 offset-m3 center-align">
+                        <a class="oauth-container btn darken-4 white black-text" href="{% provider_login_url 'google' %}" style="text-transform:none">
+                            <div class="left">
+                                <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"
+                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                            </div>
+                            Login with Google
+                        </a>
+                    </div>
+                    <br />
                     <a href="{% url 'changed:signup' %}" style="color:rgb(81, 133, 168)">Click here to sign up</a>
                 </div>
             </div>
-            {% endif %}
 
             <!-- Optional JavaScript -->
             <!-- jQuery first, then Popper.js, then Bootstrap JS -->
             <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
+                    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                    crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
+                    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                    crossorigin="anonymous"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
+                    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                    crossorigin="anonymous"></script>
         </div>
     </div>
 </body>
-<footer class="bg-light text-center text-lg-start fixed-bottom">
-    <div class="text-center p-3" style="background-color:#465C69; color:white">
-        © 2021 B-25
-    </div>
-</footer>
-
-</html>
+{% endblock %}
