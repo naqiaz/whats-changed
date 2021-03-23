@@ -1,6 +1,7 @@
 ﻿{% extends 'changed/base_html.html' %}
 {% load socialaccount %}
 {% block content %}
+
 <head>
     <title>Login</title>
     <!-- Required meta tags -->
@@ -8,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
 </head>
 
@@ -21,7 +22,7 @@
                     Login to access your account:
                 </div>
                 <form action="{% url 'changed:authenticate'%}" , method="POST" class="text-center"
-                      style="margin-top:15px; margin-bottom: 15px;">
+                    style="margin-top:15px; margin-bottom: 15px;">
                     {% csrf_token %}
                     <div class="form-group">
                         <label for="username">Username:</label>
@@ -33,17 +34,18 @@
                     </div>
                     <div>
                         <button type="submit" value="Login" class="btn"
-                                style="background-color:rgb(151, 151, 151); color:white">
+                            style="background-color:rgb(151, 151, 151); color:white">
                             Login
                         </button>
                     </div>
                 </form>
                 <div class="text-center">
                     <div class="col s12 m6 offset-m3 center-align">
-                        <a class="oauth-container btn darken-4 white black-text" href="{% provider_login_url 'google' %}" style="text-transform:none">
+                        <a class="oauth-container btn darken-4 white black-text"
+                            href="{% provider_login_url 'google' %}" style="text-transform:none">
                             <div class="left">
                                 <img width="20px" style="margin-top:7px; margin-right:8px" alt="Google sign-in"
-                                     src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
+                                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
                             </div>
                             Login with Google
                         </a>
@@ -56,14 +58,14 @@
             <!-- Optional JavaScript -->
             <!-- jQuery first, then Popper.js, then Bootstrap JS -->
             <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                    crossorigin="anonymous"></script>
+                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                    crossorigin="anonymous"></script>
+                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                crossorigin="anonymous"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                    crossorigin="anonymous"></script>
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
         </div>
     </div>
 </body>
