@@ -5,13 +5,11 @@ from django.contrib.auth import authenticate, login, logout as auth_logout
 
 # Create your views here.
 def index(request):
-    #the default page is the login page
+    if request.user.is_authenticated:
+            return render(request,'changed/home.html')
+    else:
+            return render(request,'changed/login.html')
     return render(request,'changed/login.html')
-
-
-
-    
-
 
 def signup(request):
     return render(request,'changed/signup.html')
