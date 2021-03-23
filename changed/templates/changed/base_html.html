@@ -1,15 +1,16 @@
 <head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #465C69;">
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5d7fa3;">
     <div class="container-fluid">
         <a class="navbar-brand" style="color:white">
             <img src="https://live.staticflickr.com/65535/51031464312_85b95e8be5_o.png" width="27" height="27"
-                 class="d-inline-block align-top">
+                class="d-inline-block align-top">
             What's Changed?
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
@@ -19,7 +20,8 @@
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'changed:logout' %}">Logout<span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'changed:logout' %}">Logout<span
+                            class="sr-only">(current)</span></a>
                 </li>
                 {% else %}
                 <li class="nav-item active">
@@ -28,13 +30,22 @@
                 {% endif %}
             </ul>
         </div>
+        {% if user.is_authenticated %}
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link">Hi, {{user.username}}!</a>
+                </li>
+            </ul>
+        </div>
+        {% endif %}
     </div>
 </nav>
 {% block content %}
 {% endblock %}
 
 <footer class="bg-light text-center text-lg-start fixed-bottom">
-    <div class="text-center p-3" style="background-color:#465C69; color:white">
+    <div class="text-center p-3" style="background-color:#5d7fa3; color:white">
         &copy; 2021 B-25
     </div>
 </footer>
