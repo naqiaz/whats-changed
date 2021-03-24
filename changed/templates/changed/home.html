@@ -23,6 +23,18 @@
                 }
         </style>
         <script>
+                function update(coords, lat, lng) {
+                        var result = coords;
+                        var xCoord = lat;
+                        var yCoord = lng;
+                        var output = "The current coordinates are " + result;
+                        var xOutput = "x-value: " + xCoord.toString();
+                        var yOutput = "y-value: " + yCoord.toString();
+                        // Display result
+                        document.getElementById("result").innerHTML = output;   // x and y
+                        document.getElementById("xCoord").innerHTML = xOutput;  // x
+                        document.getElementById("yCoord").innerHTML = yOutput;  // y
+                }
                 let map;
 
                 function initMap() {
@@ -30,6 +42,13 @@
                                 center: { lat: 38.03431597661412, lng: -78.48429406636879 },
                                 zoom: 15,
 
+                        });
+                        // Listener for when the user clicks on a place
+                        map.addListener("click", (mapsMouseEvent) => {
+                                xy = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2) // string representation of the x and y coordinates
+                                x = mapsMouseEvent.latLng.lat() // x-coordinate retrieved as a number
+                                y = mapsMouseEvent.latLng.lng() // y-coordinate retrieved as a number
+                                update(xy, x, y)
                         });
                 }
         </script>
@@ -45,10 +64,30 @@
 
 
 <body>
-        <div id="map" style="width:70vw; height: 80vh; margin:10px;"></div>
-        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcKs56aiWAYfArUi4E_NH_2VZI2wrBshQ&callback=initMap&libraries=&v=weekly"
-                async></script>
+        <div class="container-fluid">
+                <div class="row">
+                        <div class="col">
+                                <div id="map" style="width:60vw; height: 80vh; margin-top:10px; margin-bottom: 10px;">
+                                </div>
+                                <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcKs56aiWAYfArUi4E_NH_2VZI2wrBshQ&callback=initMap&libraries=&v=weekly"
+                                        async></script>
+                        </div>
+                        <div class="col">
+                                <div class="card" style="margin:2vh">
+                                        <h5 class="card-header text-center" style="color:#5d7fa3">Business Name</h5>
+
+                                        <div class="card-body">
+                                                <p style="color:rgb(122, 122, 122)">Business Address</p>
+                                                <p>rating</p>
+                                        </div>
+                                </div>
+                                <p id="result"></p>
+                                <p id="xCoord"></p>
+                                <p id="yCoord"></p>
+                        </div>
+                </div>
+        </div>
 </body>
 
 <!-- Optional JavaScript -->
