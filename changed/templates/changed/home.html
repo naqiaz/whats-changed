@@ -35,6 +35,22 @@
                         document.getElementById("xCoord").innerHTML = xOutput;  // x
                         document.getElementById("yCoord").innerHTML = yOutput;  // y
                 }
+
+                function updateBusiness(pid, name, addr, rtg) {
+                        var place = pid;
+                        var business = name;
+                        var address = addr;
+                        var rated = rtg;
+                        var pidOutput = "PID: " + place;
+                        var nameOutput = business;
+                        var addrOutput = address;
+                        var ratingOutput = "Rating: " + rated + "/5";
+                        // Display result
+                        document.getElementById("pid").innerHTML = pidOutput;   // pid
+                        document.getElementById("name").innerHTML = nameOutput;   // name
+                        document.getElementById("addr").innerHTML = addrOutput;   // address
+                        document.getElementById("rating").innerHTML = ratingOutput;   // rating
+                }
                 let map;
 
                 function initMap() {
@@ -49,7 +65,39 @@
                                 x = mapsMouseEvent.latLng.lat() // x-coordinate retrieved as a number
                                 y = mapsMouseEvent.latLng.lng() // y-coordinate retrieved as a number
                                 update(xy, x, y)
+                                mapsMouseEvent.stop()
                         });
+
+                        map.addListener("click", (mapsMouseEvent) => {
+                                const place = mapsMouseEvent.placeId
+                                var placesService = new google.maps.places.PlacesService(map);
+                                placesService.getDetails(
+                                        { placeId: place },
+                                        function (results) {
+                                                updateBusiness(place, results.name, results.formatted_address, results.rating)
+                                        }
+                                );
+                                mapsMouseEvent.stop()
+
+                        });
+                        var marker;
+
+                        google.maps.event.addListener(map, 'click', function (event) {
+                                placeMarker(event.latLng);
+                        });
+
+                        function placeMarker(location) {
+
+                                if (marker == null) {
+                                        marker = new google.maps.Marker({
+                                                position: location,
+                                                map: map
+                                        });
+                                }
+                                else {
+                                        marker.setPosition(location);
+                                }
+                        }
                 }
         </script>
         <!-- Required meta tags -->
@@ -70,21 +118,25 @@
                                 <div id="map" style="width:60vw; height: 80vh; margin-top:10px; margin-bottom: 10px;">
                                 </div>
                                 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcKs56aiWAYfArUi4E_NH_2VZI2wrBshQ&callback=initMap&libraries=&v=weekly"
+                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcKs56aiWAYfArUi4E_NH_2VZI2wrBshQ&callback=initMap&libraries=places&v=weekly"
                                         async></script>
                         </div>
                         <div class="col">
+                                <!--TODO: make card show up only when we've clicked on a business (shouldn't show up when empty)-->
                                 <div class="card" style="margin:2vh">
-                                        <h5 class="card-header text-center" style="color:#5d7fa3">Business Name</h5>
+                                        <h5 class="card-header text-center" style="color:#5d7fa3" id="name">
+                                        </h5>
 
                                         <div class="card-body">
-                                                <p style="color:rgb(122, 122, 122)">Business Address</p>
-                                                <p>rating</p>
+                                                <p style="color:rgb(122, 122, 122)" id="addr"></p>
+                                                <p id="rating"></p>
                                         </div>
                                 </div>
                                 <p id="result"></p>
                                 <p id="xCoord"></p>
                                 <p id="yCoord"></p>
+                                <p id="pid"></p>
+
                         </div>
                 </div>
         </div>
@@ -100,5 +152,6 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
                 integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
                 crossorigin="anonymous"></script>
+
 </body>
 {% endblock %}
