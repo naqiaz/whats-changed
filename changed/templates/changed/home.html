@@ -23,6 +23,7 @@
                 }
         </style>
         <script>
+                // updates the coordinates when we click anywhere on the map
                 function update(coords, lat, lng) {
                         var result = coords;
                         var xCoord = lat;
@@ -35,7 +36,7 @@
                         document.getElementById("xCoord").innerHTML = xOutput;  // x
                         document.getElementById("yCoord").innerHTML = yOutput;  // y
                 }
-
+                // updates the business info when we click a new business (info shown in the card)
                 function updateBusiness(pid, name, addr, rtg) {
                         var place = pid;
                         var business = name;
@@ -65,9 +66,10 @@
                                 x = mapsMouseEvent.latLng.lat() // x-coordinate retrieved as a number
                                 y = mapsMouseEvent.latLng.lng() // y-coordinate retrieved as a number
                                 update(xy, x, y)
+                                //prevents default info box from appearing
                                 mapsMouseEvent.stop()
                         });
-
+                        // listen for when user clicks on a POI (point of interest)
                         map.addListener("click", (mapsMouseEvent) => {
                                 const place = mapsMouseEvent.placeId
                                 var placesService = new google.maps.places.PlacesService(map);
@@ -77,9 +79,11 @@
                                                 updateBusiness(place, results.name, results.formatted_address, results.rating)
                                         }
                                 );
+                                //prevents default info box from appearing
                                 mapsMouseEvent.stop()
 
                         });
+                        // code for the marker that shows up when you click the map
                         var marker;
 
                         google.maps.event.addListener(map, 'click', function (event) {
@@ -115,6 +119,7 @@
         <div class="container-fluid">
                 <div class="row">
                         <div class="col">
+                                <!--Google maps-->
                                 <div id="map" style="width:60vw; height: 80vh; margin-top:10px; margin-bottom: 10px;">
                                 </div>
                                 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
@@ -122,6 +127,7 @@
                                         async></script>
                         </div>
                         <div class="col">
+                                <!-- card containing business info and review form-->
                                 <!--TODO: make card show up only when we've clicked on a business (shouldn't show up when empty)-->
                                 <div class="card" style="margin:2vh">
                                         <h5 class="card-header text-center" style="color:#5d7fa3" id="name">
@@ -130,7 +136,7 @@
                                         <div class="card-body">
                                                 <p style="color:rgb(122, 122, 122)" id="addr"></p>
                                                 <p id="rating"></p>
-
+                                                <!--button to write a review-->
                                                 <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
                                                         aria-expanded="false" aria-controls="reviewform"
                                                         style="background-color:#5d7fa3; color:white">
@@ -141,6 +147,7 @@
                                                         style="background-color:#5d7fa3; color:white">Read
                                                         Reviews</button>
                                                 <div class="collapse" id="reviewform">
+                                                        <!--review form-->
                                                         <form>
                                                                 <!--covid policy rating-->
                                                                 <div class="form-group">
@@ -191,7 +198,7 @@
                                                                                 </div>
                                                                         </div>
                                                                 </div>
-                                                                <!--add other comments-->
+                                                                <!--place for other comments-->
                                                                 <div class="form-group">
                                                                         <label for="review-text"
                                                                                 class="col-form-label">Additional
@@ -199,7 +206,7 @@
                                                                         <textarea class="form-control"
                                                                                 id="review-text"></textarea>
                                                                 </div>
-                                                                <!--submit button-->
+                                                                <!--submit button, doesn't do anything yet-->
                                                                 <button type="submit"
                                                                         class="btn btn-secondary">Submit</button>
                                                         </form>
@@ -207,11 +214,12 @@
                                         </div>
                                 </div>
                                 <div>
+                                        <!-- extraneous info, could be helpful for backend stuff-->
                                         <p id="result"></p>
                                         <p id="xCoord"></p>
                                         <p id="yCoord"></p>
                                         <p id="pid"></p>
-
+                                        <p id="name"></p>
                                 </div>
                         </div>
 
