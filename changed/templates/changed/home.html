@@ -130,28 +130,104 @@
                                         <div class="card-body">
                                                 <p style="color:rgb(122, 122, 122)" id="addr"></p>
                                                 <p id="rating"></p>
+
+                                                <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
+                                                        aria-expanded="false" aria-controls="reviewform"
+                                                        style="background-color:#5d7fa3; color:white">
+                                                        Write Review
+                                                </a>
+                                                <!--TODO: button should redirect to another page with its reviews, or toggle to reveal list of reviews-->
+                                                <button type="button" class="btn"
+                                                        style="background-color:#5d7fa3; color:white">Read
+                                                        Reviews</button>
+                                                <div class="collapse" id="reviewform">
+                                                        <form>
+                                                                <!--covid policy rating-->
+                                                                <div class="form-group">
+                                                                        <br>
+                                                                        <label for="rating">COVID Policy
+                                                                                Compliance
+                                                                                Rating:</label>
+                                                                        <select class="form-control" id="rating"
+                                                                                required>
+                                                                                <option value="" selected disabled>--
+                                                                                        select an
+                                                                                        option --</option>
+                                                                                <option>1</option>
+                                                                                <option>2</option>
+                                                                                <option>3</option>
+                                                                                <option>4</option>
+                                                                                <option>5</option>
+                                                                        </select>
+                                                                </div>
+                                                                <!--covid dining policy checkboxes-->
+                                                                <div class="form-group">
+                                                                        <div class="form-check">
+                                                                                <div>
+                                                                                        <input class="form-check-input"
+                                                                                                type="checkbox" value=""
+                                                                                                id="indoor">
+                                                                                        <label class="form-check-label"
+                                                                                                for="indoor">
+                                                                                                Indoor
+                                                                                                Dining</label>
+                                                                                </div>
+                                                                                <div>
+                                                                                        <input class="form-check-input"
+                                                                                                type="checkbox" value=""
+                                                                                                id="outdoor">
+                                                                                        <label class="form-check-label"
+                                                                                                for="outdoor">
+                                                                                                Outdoor
+                                                                                                Dining</label>
+                                                                                </div>
+                                                                                <div>
+                                                                                        <input class="form-check-input"
+                                                                                                type="checkbox" value=""
+                                                                                                id="pickup">
+                                                                                        <label class="form-check-label"
+                                                                                                for="pickup">
+                                                                                                Pickup</label>
+                                                                                </div>
+                                                                        </div>
+                                                                </div>
+                                                                <!--add other comments-->
+                                                                <div class="form-group">
+                                                                        <label for="review-text"
+                                                                                class="col-form-label">Additional
+                                                                                Comments:</label>
+                                                                        <textarea class="form-control"
+                                                                                id="review-text"></textarea>
+                                                                </div>
+                                                                <!--submit button-->
+                                                                <button type="submit"
+                                                                        class="btn btn-secondary">Submit</button>
+                                                        </form>
+                                                </div>
                                         </div>
                                 </div>
-                                <p id="result"></p>
-                                <p id="xCoord"></p>
-                                <p id="yCoord"></p>
-                                <p id="pid"></p>
+                                <div>
+                                        <p id="result"></p>
+                                        <p id="xCoord"></p>
+                                        <p id="yCoord"></p>
+                                        <p id="pid"></p>
 
+                                </div>
                         </div>
+
                 </div>
-        </div>
 
-        <!-- Optional JavaScript -->
-        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
-
+                <!-- Optional JavaScript -->
+                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+                        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+                        crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+                        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+                        crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                        crossorigin="anonymous"></script>
 </body>
+
 {% endblock %}
