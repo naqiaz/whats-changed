@@ -129,7 +129,7 @@
                         </div>
                         <div class="col">
                                 <!-- card containing business info and review form-->
-                                <!--TODO: make card show up only when we've clicked on a business (shouldn't show up when empty)-->
+                                <!--TODO: make card and its contents show up ONLY when we've clicked on a business (shouldn't show up when it's empty)-->
                                 <div class="card" style="margin:2vh">
                                         <h5 class="card-header text-center" style="color:#5d7fa3" id="name" name="name">
                                         </h5>
@@ -143,7 +143,8 @@
                                                         style="background-color:#5d7fa3; color:white">
                                                         Write Review
                                                 </a>
-                                                <!--TODO: button should redirect to another page with its reviews, or toggle to reveal list of reviews-->
+                                                <!--TODO: button should redirect to another page with its reviews 
+                                                        (like thoughtsList from the Django HW), or toggle to reveal list of reviews-->
                                                 <button type="button" class="btn"
                                                         style="background-color:#5d7fa3; color:white">Read
                                                         Reviews</button>
@@ -210,7 +211,8 @@
                                                                         <textarea class="form-control"
                                                                                 id="review-text" name="review-text"></textarea>
                                                                 </div>
-                                                                <!--submit button, doesn't do anything yet-->
+                                                                <!-- submit button -->
+                                                                <!-- TODO: on submit, save review to database -->
                                                                 <button type="submit"
                                                                         class="btn btn-secondary">Submit</button>
                                                         </form>
