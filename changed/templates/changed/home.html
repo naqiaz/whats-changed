@@ -77,6 +77,8 @@
                                 placesService.getDetails(
                                         { placeId: place },
                                         function (results) {
+                                                // to see all place details in console, uncomment line below
+                                                //console.log(results) 
                                                 updateBusiness(place, results.name, results.formatted_address, results.rating)
                                         }
                                 );
@@ -131,9 +133,10 @@
                                 <!-- card containing business info and review form-->
                                 <!--TODO: make card and its contents show up ONLY when we've clicked on a business (shouldn't show up when it's empty)-->
                                 <div class="card" style="margin:2vh">
-                                        <h5 class="card-header text-center" style="color:#5d7fa3" id="name" name="name">
+                                        <h5 class="card-header text-center" style="font-weight: bold; color:#5d7fa3"
+                                                id="name" name="name">
                                         </h5>
-                                        
+
                                         <div class="card-body">
                                                 <p style="color:rgb(122, 122, 122)" id="addr"></p>
                                                 <p id="rating"></p>
@@ -150,7 +153,8 @@
                                                         Reviews</button>
                                                 <div class="collapse" id="reviewform">
                                                         <!--review form-->
-                                                        <form action="{% url 'changed:processreview' %}", method="POST">
+                                                        <form action="{% url 'changed:processreview' %}" ,
+                                                                method="POST">
                                                                 {% csrf_token %}
                                                                 <!--Business name-->
                                                                 <input hidden id="businessName" name="businessName">
@@ -165,14 +169,15 @@
                                                                                 <option value="" selected disabled>--
                                                                                         select an
                                                                                         option --</option>
-                                                                                <option id="1", value="1">1</option>
-                                                                                <option id="2", value="2">2</option>
-                                                                                <option id="3", value="3">3</option>
-                                                                                <option id="4",value="4">4</option>
-                                                                                <option id="5", value="5">5</option>
+                                                                                <option id="1" , value="1">1</option>
+                                                                                <option id="2" , value="2">2</option>
+                                                                                <option id="3" , value="3">3</option>
+                                                                                <option id="4" ,value="4">4</option>
+                                                                                <option id="5" , value="5">5</option>
                                                                         </select>
                                                                 </div>
                                                                 <!--covid dining policy checkboxes-->
+
                                                                 <div class="form-group">
                                                                         <div class="form-check">
                                                                                 <div>
@@ -201,6 +206,14 @@
                                                                                                 for="pickup">
                                                                                                 Pickup</label>
                                                                                 </div>
+                                                                                <div>
+                                                                                        <input class="form-check-input"
+                                                                                                type="checkbox" value=""
+                                                                                                id="capacity-limit">
+                                                                                        <label class="form-check-label"
+                                                                                                for="capacity-limit">
+                                                                                                Capacity Limit</label>
+                                                                                </div>
                                                                         </div>
                                                                 </div>
                                                                 <!--place for other comments-->
@@ -208,8 +221,8 @@
                                                                         <label for="review-text"
                                                                                 class="col-form-label">Additional
                                                                                 Comments:</label>
-                                                                        <textarea class="form-control"
-                                                                                id="review-text" name="review-text"></textarea>
+                                                                        <textarea class="form-control" id="review-text"
+                                                                                name="review-text"></textarea>
                                                                 </div>
                                                                 <!-- submit button -->
                                                                 <!-- TODO: on submit, save review to database -->
