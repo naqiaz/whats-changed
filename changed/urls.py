@@ -8,6 +8,9 @@ urlpatterns = [
     path('signup/',views.signup,name='signup'),
     path('authenticate/',auth.auth,name='authenticate'),
     path('logout/',auth.logout,name='logout'),
-    path('review_list/',views.business_review_list,name='reviewlist'),
+    #displays directory of businesses with links to reviews
+    path('reviews/',views.business_review_list,name='reviewlist'),
     path('review_processing/',views.writeReview,name='processreview'),
+    #shows comments/reviews for one particular business
+    path('reviews/<int:business_id>',views.show_reviews,name='specificreview'),
 ]

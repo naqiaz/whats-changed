@@ -50,6 +50,7 @@
                         document.getElementById("pid").innerHTML = pidOutput;   // pid
                         document.getElementById("name").innerHTML = nameOutput;   // name
                         document.getElementById("businessName").value = nameOutput;   // name
+                        document.getElementById("readBusinessName").value = nameOutput;   //when read review is clicked name
                         document.getElementById("addr").innerHTML = addrOutput;   // address
                         document.getElementById("rating").innerHTML = ratingOutput;   // rating
                 }
@@ -148,9 +149,12 @@
                                                 </a>
                                                 <!--TODO: button should redirect to another page with its reviews 
                                                         (like thoughtsList from the Django HW), or toggle to reveal list of reviews-->
-                                                <button type="button" class="btn"
+                                                        
+                                                        <button type="button" class="btn"
                                                         style="background-color:#5d7fa3; color:white">Read
                                                         Reviews</button>
+
+                                                
                                                 <div class="collapse" id="reviewform">
                                                         <!--review form-->
                                                         <form action="{% url 'changed:processreview' %}" ,
