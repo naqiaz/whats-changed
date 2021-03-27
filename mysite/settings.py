@@ -115,7 +115,7 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-SITE_ID = 3
+SITE_ID = 2
 LOGIN_REDIRECT_URL = '/'
 
 SOCIALACCOUNT_PROVIDERS = {

@@ -37,22 +37,25 @@
                         document.getElementById("yCoord").innerHTML = yOutput;  // y
                 }
                 // updates the business info when we click a new business (info shown in the card)
-                function updateBusiness(pid, name, addr, rtg) {
+                function updateBusiness(pid, name, addr, rtg, hrs) {
                         var place = pid;
                         var business = name;
                         var address = addr;
                         var rated = rtg;
+                        var hours = hrs;
                         var pidOutput = "PID: " + place;
                         var nameOutput = business;
                         var addrOutput = address;
                         var ratingOutput = "Rating: " + rated + "/5";
+                        var hoursOutput = hours;
                         // Display result
                         document.getElementById("pid").innerHTML = pidOutput;   // pid
                         document.getElementById("name").innerHTML = nameOutput;   // name
-                        document.getElementById("businessName").value = nameOutput;   // name
-                        document.getElementById("readBusinessName").value = nameOutput;   //when read review is clicked name
                         document.getElementById("addr").innerHTML = addrOutput;   // address
                         document.getElementById("rating").innerHTML = ratingOutput;   // rating
+                        document.getElementById("hours").innerHTML = hoursOutput;
+                        document.getElementById("businessName").value = nameOutput;   // name
+                        document.getElementById("readBusinessName").value = nameOutput;   //when read review is clicked name
                 }
                 let map;
 
@@ -79,8 +82,8 @@
                                         { placeId: place },
                                         function (results) {
                                                 // to see all place details in console, uncomment line below
-                                                //console.log(results) 
-                                                updateBusiness(place, results.name, results.formatted_address, results.rating)
+                                                var d = new Date()
+                                                updateBusiness(place, results.name, results.formatted_address, results.rating, results.opening_hours.weekday_text[d.getDay() - 1])
                                         }
                                 );
                                 //prevents default info box from appearing
@@ -140,7 +143,10 @@
 
                                         <div class="card-body">
                                                 <p style="color:rgb(122, 122, 122)" id="addr"></p>
+                                                <p style="color: #5d7fa3" id="hours"></p>
                                                 <p id="rating"></p>
+                                                <!-- TODO: display average COVID policy compliance rating from reviews-->
+                                                <p>COVID Policy Compliance: /5</p>
                                                 <!--button to write a review-->
                                                 <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
                                                         aria-expanded="false" aria-controls="reviewform"
@@ -228,6 +234,7 @@
                                                                         <input type="text" class="form-control"
                                                                                 id="capacity-limit">
                                                                 </div>
+
                                                                 <!--place for other comments-->
                                                                 <div class="form-group">
                                                                         <label for="review-text"
