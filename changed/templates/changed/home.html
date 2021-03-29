@@ -148,23 +148,24 @@
                                                 <!-- TODO: display average COVID policy compliance rating from reviews-->
                                                 <p>COVID Policy Compliance: /5</p>
                                                 <!-- TODO: display latest reported capacity limit-->
+
+                                                <!--TODO: button should redirect to another page with its reviews 
+                                                        (like thoughtsList from the Django HW), or toggle to reveal list of reviews-->
+
+                                                <form action="{% url 'changed:specificreview' %}" , method="POST">
+                                                        {% csrf_token %}
+                                                        <input hidden id="businessName" name="businessName" />
+                                                        <button type="submit" class="btn"
+                                                                style="background-color:#5d7fa3; color:white">
+                                                                Read Reviews
+                                                        </button>
+                                                </form>
                                                 <!--button to write a review-->
                                                 <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
                                                         aria-expanded="false" aria-controls="reviewform"
                                                         style="background-color:#5d7fa3; color:white">
                                                         Write Review
                                                 </a>
-                                                <!--TODO: button should redirect to another page with its reviews 
-                                                        (like thoughtsList from the Django HW), or toggle to reveal list of reviews-->
-
-                                                <form action="{% url 'changed:specificreview' %}", method="POST">
-                                                    {% csrf_token %}
-                                                    <input hidden id="businessName" name="businessName" />
-                                                    <button type="submit" class="btn"
-                                                            style="background-color:#5d7fa3; color:white">
-                                                        Read Reviews
-                                                    </button>
-                                                </form>
 
                                                 <div class="collapse" id="reviewform">
                                                         <!--review form-->
@@ -256,7 +257,7 @@
                                                 </div>
                                         </div>
                                 </div>
-                                <div>
+                                <div style="display:none">
                                         <!-- extraneous info, could be helpful for backend stuff-->
                                         <p id="result"></p>
                                         <p id="xCoord"></p>
