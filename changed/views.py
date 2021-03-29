@@ -21,23 +21,20 @@ def writeReview(request):
     '''
     review_text = request.POST['review-text']
     business_name=request.POST['businessName']
-    business_addr = request.POST['addr']
     user = request.user
-    if(Business.objects.filter(business_name=business_name, business_addr=business_addr).exists()):
+    if(Business.objects.filter(business_name=business_name).exists()):
         #the business already exists, don't create a duplicate
         print('The business already exists')
-        business = Business.objects.get(business_name=business_name,business_addr=business_addr)
+        business = Business.objects.get(business_name=business_name)
         business_info = BusinessInfo.objects.create(business=business, body = review_text)
         print(business_name)
         print(review_text)
-        print(business_addr)
         return redirect('changed:index')
     else:
-        business = Business.objects.create(business_name=business_name,business_addr=business_addr)
+        business = Business.objects.create(business_name=business_name)
         business_info = BusinessInfo.objects.create(business=business, body = review_text)
         print(business_name)
         print(review_text)
-        print(business_addr)
         return redirect('changed:index')
     
 
