@@ -47,7 +47,8 @@ def show_reviews(request, business_id):
         business = Business.objects.get(id=business_id)
         business_name = business.business_name
         business_info = business.businessinfo_set.all()
-        print(business_name)
+        print(business_name) 
+        #TEST
         context = {
             'business':business,
             'business_info':business_info,
