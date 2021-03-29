@@ -14,9 +14,6 @@ def index(request):
 def signup(request):
     return render(request,'changed/signup.html')
 
-def business_review_list(request):
-        #shows the reviews for a business (when you click 'Read review')
-    return HttpResponse('Somebody write a reviews list')
 
 def writeReview(request):
     '''
@@ -24,39 +21,41 @@ def writeReview(request):
     '''
     review_text = request.POST['review-text']
     business_name=request.POST['businessName']
+    business_addr = request.POST['addr']
     user = request.user
-    if(Business.objects.filter(business_name=business_name).exists()):
+    if(Business.objects.filter(business_name=business_name, business_addr=business_addr).exists()):
         #the business already exists, don't create a duplicate
         print('The business already exists')
-        business = Business.objects.get(business_name=business_name)
+        business = Business.objects.get(business_name=business_name,business_addr=business_addr)
         business_info = BusinessInfo.objects.create(business=business, body = review_text)
         print(business_name)
         print(review_text)
+        print(business_addr)
         return redirect('changed:index')
     else:
-        business = Business.objects.create(business_name=business_name)
+        business = Business.objects.create(business_name=business_name,business_addr=business_addr)
         business_info = BusinessInfo.objects.create(business=business, body = review_text)
         print(business_name)
         print(review_text)
+        print(business_addr)
         return redirect('changed:index')
     
 
-def show_reviews(request, business_id):
+def show_reviews(request):
     #this page shows the respective business and all of its comments, shown when "Read review" is clicked
-    try:
-        business = Business.objects.get(id=business_id)
-        business_name = business.business_name
-        business_info = business.businessinfo_set.all()
-        print(business_name) 
-        #TEST
-        context = {
+        business_name = request.POST['businessName']
+        if (Business.objects.filter(business_name=business_name).exists()):
+            business = Business.objects.get(business_name=business_name)
+            business_name = business.business_name
+            business_info = business.businessinfo_set.all()
+            print(business_name) 
+            context = {
             'business':business,
             'business_info':business_info,
-        }
-        return render(request,'changed/comments.html',context)
-        
-    except:
-        return render(request,'changed/home.html')
+            }
+            return render(request,'changed/comments.html',context)
+        else:
+            return render(request,'changed/home.html')
 
     
     

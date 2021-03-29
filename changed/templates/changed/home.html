@@ -157,10 +157,14 @@
                                                 <!--TODO: button should redirect to another page with its reviews 
                                                         (like thoughtsList from the Django HW), or toggle to reveal list of reviews-->
 
-                                                <button type="button" class="btn"
-                                                        style="background-color:#5d7fa3; color:white">Read
-                                                        Reviews</button>
-
+                                                <form action="{% url 'changed:specificreview' %}", method="POST">
+                                                    {% csrf_token %}
+                                                    <input hidden id="businessName" name="businessName" />
+                                                    <button type="submit" class="btn"
+                                                            style="background-color:#5d7fa3; color:white">
+                                                        Read Reviews
+                                                    </button>
+                                                </form>
 
                                                 <div class="collapse" id="reviewform">
                                                         <!--review form-->
@@ -169,6 +173,8 @@
                                                                 {% csrf_token %}
                                                                 <!--Business name-->
                                                                 <input hidden id="businessName" name="businessName">
+                                                                <!--Business address-->
+                                                                <input hidden id="addr" name="addr" />
                                                                 <!--covid policy rating-->
                                                                 <div class="form-group">
                                                                         <br>
