@@ -154,7 +154,7 @@
 
                                                 <form action="{% url 'changed:specificreview' %}" , method="POST">
                                                         {% csrf_token %}
-                                                        <input hidden id="businessName" name="businessName" />
+                                                        <input hidden id="readBusinessName" name="businessName" />
                                                         <button type="submit" class="btn"
                                                                 style="background-color:#5d7fa3; color:white">
                                                                 Read Reviews
@@ -173,7 +173,7 @@
                                                                 method="POST">
                                                                 {% csrf_token %}
                                                                 <!--Business name-->
-                                                                <input hidden id="businessName" name="businessName">
+                                                                <input id="businessName" name="businessName">
                                                                 <!--covid policy rating-->
                                                                 <div class="form-group">
                                                                         <br>

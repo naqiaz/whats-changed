@@ -21,6 +21,7 @@ def writeReview(request):
     '''
     review_text = request.POST['review-text']
     business_name=request.POST['businessName']
+    print(business_name)
     user = request.user
     if(Business.objects.filter(business_name=business_name).exists()):
         #the business already exists, don't create a duplicate
