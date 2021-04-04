@@ -47,14 +47,16 @@
                         var nameOutput = business;
                         var addrOutput = address;
                         var ratingOutput = "Rating: " + rated + "/5";
-                        var hoursOutput = hours;
+                        var hoursOutput = "hours: " + hours;
                         // Display result
-                        document.getElementClassName("pid").innerHTML = pidOutput;   // pid
+                        document.getElementById("pid").innerHTML = pidOutput;
+                        document.getElementById("readPid").innerHTML = pidOutput;
                         document.getElementById("name").innerHTML = nameOutput;   // name
                         document.getElementById("addr").innerHTML = addrOutput;   // address
                         document.getElementById("rating").innerHTML = ratingOutput;   // rating
                         document.getElementById("hours").innerHTML = hoursOutput;
-                        document.getElementClassName("businessName").value = nameOutput;   // name
+                        document.getElementById("businessName").value = nameOutput;
+                        document.getElementById("readBusinessName").value = nameOutput;// name
                 }
                 let map;
 
@@ -142,7 +144,7 @@
 
                                         <div class="card-body">
                                                 <p style="color:rgb(122, 122, 122)" id="addr"></p>
-                                                <p style="color: #5d7fa3" id="hours"></p>
+                                                <p id="hours" style="color: #5d7fa3"></p>
                                                 <p id="rating"></p>
                                                 <!-- TODO: display average COVID policy compliance rating from reviews-->
                                                 <p>COVID Policy Compliance: /5</p>
@@ -153,8 +155,8 @@
 
                                                 <form action="{% url 'changed:specificreview' %}" , method="POST">
                                                         {% csrf_token %}
-                                                        <input hidden class="BusinessName" name="businessName" />
-                                                        <input hidden class="pid" name="businessPid" />
+                                                        <input hidden id="readBusinessName" name="businessName" />
+                                                        <input hidden id="readPid" name="businessPid" />
                                                         <button type="submit" class="btn"
                                                                 style="background-color:#5d7fa3; color:white">
                                                                 Read Reviews
@@ -173,9 +175,9 @@
                                                                 method="POST">
                                                                 {% csrf_token %}
                                                                 <!--Business name-->
-                                                                <input hidden class="businessName" name="businessName">
+                                                                <input hidden id="businessName" name="businessName">
                                                                 <!--Business pid-->
-                                                                <input hidden class="pid" name="businessPid" />
+                                                                <input hidden id="pid" name="businessPid" />
                                                                 <!--covid policy rating-->
                                                                 <div class="form-group">
                                                                         <br>
@@ -264,9 +266,6 @@
                                         <p id="result"></p>
                                         <p id="xCoord"></p>
                                         <p id="yCoord"></p>
-                                        <p id="pid"></p>
-                                        <!--The below line won't work because only one element can have id=name-->
-                                        <p id="name"></p>
                                 </div>
                         </div>
 
