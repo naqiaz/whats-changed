@@ -55,8 +55,9 @@ def show_reviews(request):
             business_info = business.businessinfo_set.all()
             print(business_name) 
             context = {
-            'business':business,
+            'business_name':business_name,
             'business_info':business_info,
+            "business" : business,
             }
             return render(request,'changed/comments.html',context)
         else:
