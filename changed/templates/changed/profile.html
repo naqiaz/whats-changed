@@ -1,0 +1,21 @@
+﻿{% extends 'changed/base_html.html' %}
+
+{% block content %}
+<!--Content goes here-->
+<head>
+    <title>{{user.username}}</title>
+</head>
+<body>
+    {% for review in user_reviews %}
+    <ul>
+        <li>
+            <p>{{review.business.business_name}}</p>
+            <p>{{review.covid_compliance_rating}}</p>
+            <p>{{review.body}}</p>
+        </li>
+    </ul>
+
+    {% endfor %}
+
+</body>
+{% endblock %}

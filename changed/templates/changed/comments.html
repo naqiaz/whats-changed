@@ -9,6 +9,8 @@
     {% for comment in business_info %}
         <ul>
             <li>
+                <p>{{comment.user.username}}</p>
+                <p>{{comment.covid_compliance_rating}}</p>
                 <p>{{comment.body}}</p>
             </li>
         </ul>

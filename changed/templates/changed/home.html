@@ -49,13 +49,12 @@
                         var ratingOutput = "Rating: " + rated + "/5";
                         var hoursOutput = hours;
                         // Display result
-                        document.getElementById("pid").innerHTML = pidOutput;   // pid
+                        document.getElementClassName("pid").innerHTML = pidOutput;   // pid
                         document.getElementById("name").innerHTML = nameOutput;   // name
                         document.getElementById("addr").innerHTML = addrOutput;   // address
                         document.getElementById("rating").innerHTML = ratingOutput;   // rating
                         document.getElementById("hours").innerHTML = hoursOutput;
-                        document.getElementById("businessName").value = nameOutput;   // name
-                        document.getElementById("readBusinessName").value = nameOutput;   //when read review is clicked name
+                        document.getElementClassName("businessName").value = nameOutput;   // name
                 }
                 let map;
 
@@ -154,7 +153,8 @@
 
                                                 <form action="{% url 'changed:specificreview' %}" , method="POST">
                                                         {% csrf_token %}
-                                                        <input hidden id="readBusinessName" name="businessName" />
+                                                        <input hidden class="BusinessName" name="businessName" />
+                                                        <input hidden class="pid" name="businessPid" />
                                                         <button type="submit" class="btn"
                                                                 style="background-color:#5d7fa3; color:white">
                                                                 Read Reviews
@@ -173,7 +173,9 @@
                                                                 method="POST">
                                                                 {% csrf_token %}
                                                                 <!--Business name-->
-                                                                <input id="businessName" name="businessName">
+                                                                <input hidden class="businessName" name="businessName">
+                                                                <!--Business pid-->
+                                                                <input hidden class="pid" name="businessPid" />
                                                                 <!--covid policy rating-->
                                                                 <div class="form-group">
                                                                         <br>

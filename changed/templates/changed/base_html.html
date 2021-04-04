@@ -20,9 +20,11 @@
                 </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item active">
-                    <a class="nav-link" href="{% url 'changed:logout' %}">Logout<span
-                            class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="{% url 'changed:logout' %}">
+                        Logout<span class="sr-only">(current)</span>
+                    </a>
                 </li>
+                
                 {% else %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'changed:index' %}">Login<span class="sr-only">(current)</span></a>
@@ -34,7 +36,9 @@
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <div style="margin-right:5px">
-                    <a style="color:white">Hi, {{user.username}}! </a>
+                            <a style="color:white" class="nav-link" href="{% url 'changed:profile' username=user.username %}">
+                                {{user.username}} <span class="sr-only">(current)</span>
+                            </a>
                 </div>
                 <div class="dropdown">
                     <a class="" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
