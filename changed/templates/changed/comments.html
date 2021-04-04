@@ -2,18 +2,21 @@
 
 {% block content %}
 <!--Content goes here-->
-<head>
-    <title>{{business.business_name}} reviews</title>
-</head>
-<body>
+
+<body> 
+    <h2 class="text-center">{{business_name}} COVID Guideline Reviews</h2>
     {% for comment in business_info %}
-        <ul>
-            <li>
-                <p>{{comment.user.username}}</p>
-                <p>{{comment.covid_compliance_rating}}</p>
-                <p>{{comment.body}}</p>
-            </li>
-        </ul>
+  
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action" aria-current="false">
+              <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1"><u> Covid Compliance Rating: </u>{{comment.covid_compliance_rating}}</h5>
+                <small>{{comment.user.username}}</small>
+              </div>
+              <p class="mb-1">{{comment.body}}</p>
+            </a>
+
+          </div>
         
     {% endfor %}
     
