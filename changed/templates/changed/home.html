@@ -82,7 +82,7 @@
                                         function (results) {
                                                 // to see all place details in console, uncomment line below
                                                 var d = new Date()
-                                                updateBusiness(place, results.name, results.formatted_address, results.rating, results.opening_hours.weekday_text[d.getDay() - 1])
+                                                updateBusiness(place, results.name, results.formatted_address, results.rating, results.opening_hours.weekday_text[(d.getDay() + 6) % 7])
                                         }
                                 );
                                 //prevents default info box from appearing
