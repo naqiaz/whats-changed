@@ -39,4 +39,18 @@ class AuthTestCase(TestCase):
             #self.assertTrue(true)
         except:
             return False
+    
+    def test_write_review(self):
+        user = User.objects.get(username='TestUsername')
+        #Post a review for a specific business (Dummy test called B-25 restaurant)
+        data = {
+            'review-text': 'Random Restaurant',
+            'businessName':'B-25 Restaurant',
+            'businessPid': 'B-25 PID',
+
+        }
+        return True
+        response = self.client.post(reverse('changed:processreview'), data)
+        
+
         
