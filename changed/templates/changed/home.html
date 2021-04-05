@@ -47,7 +47,7 @@
                         var nameOutput = business;
                         var addrOutput = address;
                         var ratingOutput = "Rating: " + rated + "/5";
-                        var hoursOutput = "hours: " + hours;
+                        var hoursOutput = "Hours: " + hours;
                         // Display result
                         document.getElementById("pid").innerHTML = pidOutput;
                         document.getElementById("readPid").innerHTML = pidOutput;
@@ -149,9 +149,6 @@
                                                 <!-- TODO: display average COVID policy compliance rating from reviews-->
                                                 <p>COVID Policy Compliance: /5</p>
                                                 <!-- TODO: display latest reported capacity limit-->
-
-                                                <!--TODO: button should redirect to another page with its reviews 
-                                                        (like thoughtsList from the Django HW), or toggle to reveal list of reviews-->
 
                                                 <form action="{% url 'changed:specificreview' %}" , method="POST">
                                                         {% csrf_token %}
