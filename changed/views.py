@@ -12,6 +12,14 @@ def index(request):
     else:
             return render(request,'changed/login.html')
 
+
+def about(request):
+    if request.user.is_authenticated:
+            return render(request,'changed/about.html')
+    else:
+            return render(request,'changed/login.html')
+
+
 def signup(request):
     return render(request,'changed/signup.html')
 
