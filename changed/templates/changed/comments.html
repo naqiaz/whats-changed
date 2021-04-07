@@ -9,11 +9,41 @@
   
         <div class="list-group">
             <a href="#" class="list-group-item list-group-item-action" aria-current="false">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1"><u> Covid Compliance Rating: </u>{{comment.covid_compliance_rating}}</h5>
-                <small>{{comment.user.username}}</small>
-              </div>
-              <p class="mb-1">{{comment.body}}</p>
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1"><u> Covid Compliance Rating: </u>{{comment.covid_compliance_rating}}</h5>
+                    <small>{{comment.user.username}}</small>
+                </div>
+                <p class="mb-1">
+                    indoor dining:
+                    {%if comment.indoor_dining == True %}
+                    &#10003;
+                    {% else %}
+                    &#10007;
+                    {% endif %}, 
+                    outdoor dining:
+                    {%if comment.indoor_dining == True %}
+                    &#10003;
+                    {% else %}
+                    &#10007;
+                    {% endif %}
+                </p>
+                <p class="mb-1">
+                    curbside pickup:
+                    {%if comment.curbside_pickup == True %}
+                    &#10003;
+                    {% else %}
+                    &#10007;
+                    {% endif %},
+                    delivery:
+                    {%if comment.delivery == True %}
+                    &#10003;
+                    {% else %}
+                    &#10007;
+                    {% endif %}
+                </p>
+                <p class="mb-1">capacity limit: {{comment.capacity_limit}}</p>
+                <p class="mb-1">{{comment.body}}</p>
+
             </a>
 
           </div>

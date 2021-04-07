@@ -168,93 +168,60 @@
 
                                                 <div class="collapse" id="reviewform">
                                                         <!--review form-->
-                                                        <form action="{% url 'changed:processreview' %}" ,
-                                                                method="POST">
-                                                                {% csrf_token %}
-                                                                <!--Business name-->
-                                                                <input hidden id="businessName" name="businessName">
-                                                                <!--Business pid-->
-                                                                <input hidden id="pid" name="businessPid" />
-                                                                <!--covid policy rating-->
-                                                                <div class="form-group">
-                                                                        <br>
-                                                                        <label for="rating">COVID Policy
-                                                                                Compliance
-                                                                                Rating:</label>
-                                                                        <select class="form-control" id="rating"
-                                                                                required>
-                                                                                <option value="" selected disabled>--
-                                                                                        select an
-                                                                                        option --</option>
-                                                                                <option id="1" , value="1">1</option>
-                                                                                <option id="2" , value="2">2</option>
-                                                                                <option id="3" , value="3">3</option>
-                                                                                <option id="4" ,value="4">4</option>
-                                                                                <option id="5" , value="5">5</option>
-                                                                        </select>
-                                                                </div>
-                                                                <!--covid dining policy checkboxes-->
-
-                                                                <div class="form-group">
-                                                                        <div class="form-check">
-                                                                                <div>
-                                                                                        <input class="form-check-input"
-                                                                                                type="checkbox" value=""
-                                                                                                id="indoor">
-                                                                                        <label class="form-check-label"
-                                                                                                for="indoor">
-                                                                                                Indoor
-                                                                                                Dining</label>
-                                                                                </div>
-                                                                                <div>
-                                                                                        <input class="form-check-input"
-                                                                                                type="checkbox" value=""
-                                                                                                id="outdoor">
-                                                                                        <label class="form-check-label"
-                                                                                                for="outdoor">
-                                                                                                Outdoor
-                                                                                                Dining</label>
-                                                                                </div>
-                                                                                <div>
-                                                                                        <input class="form-check-input"
-                                                                                                type="checkbox" value=""
-                                                                                                id="pickup">
-                                                                                        <label class="form-check-label"
-                                                                                                for="pickup">
-                                                                                                Pickup</label>
-                                                                                </div>
-                                                                                <div>
-                                                                                        <input class="form-check-input"
-                                                                                                type="checkbox" value=""
-                                                                                                id="curbside">
-                                                                                        <label class="form-check-label"
-                                                                                                for="curbside">
-                                                                                                Curbside</label>
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
-                                                                <!-- place to specify capacity limit, or "none" if there isn't one-->
-                                                                <div class="form-group">
-                                                                        <label for="title"
-                                                                                class="col-form-label">Capacity
-                                                                                Limit:</label>
-                                                                        <input type="text" class="form-control"
-                                                                                id="capacity-limit">
-                                                                </div>
-
-                                                                <!--place for other comments-->
-                                                                <div class="form-group">
-                                                                        <label for="review-text"
-                                                                                class="col-form-label">Additional
-                                                                                Comments:</label>
-                                                                        <textarea class="form-control" id="review-text"
-                                                                                name="review-text"></textarea>
-                                                                </div>
-                                                                <!-- submit button -->
-                                                                <!-- TODO: on submit, save review to database -->
-                                                                <button type="submit"
-                                                                        class="btn btn-secondary">Submit</button>
-                                                        </form>
+                                                    <form action="{% url 'changed:processreview' %}" ,
+                                                          method="post">
+                                                        {% csrf_token %}
+                                                        <input hidden id="businessName" name="businessName" />
+                                                        <input hidden id="pid" name="businessPid" />
+                                                        <div class="form-control">
+                                                        <div class="fieldWrapper">
+                                                            {{ form.covid_compliance_rating.errors }}
+                                                            {{ form.covid_compliance_rating.label_tag }}
+                                                            {{ form.covid_compliance_rating }}
+                                                        </div>
+                                                        <div class="fieldWrapper" style="width:200px">
+                                                            {{ form.capacity_limit.errors }}
+                                                            {{ form.capacity_limit.label_tag }}
+                                                            {{ form.capacity_limit }}
+                                                        </div> <br />
+                                                        <div class="form-group">
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.indoor_dining.errors }}
+                                                                {{ form.indoor_dining.label_tag }}
+                                                                {{ form.indoor_dining }}
+                                                            </div>
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.outdoor_dining.errors }}
+                                                                {{ form.outdoor_dining.label_tag }}
+                                                                {{ form.outdoor_dining }}
+                                                            </div>
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.outdoor_dining.errors }}
+                                                                {{ form.outdoor_dining.label_tag }}
+                                                                {{ form.outdoor_dining }}
+                                                            </div>
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.curbside_pickup.errors }}
+                                                                {{ form.curbside_pickup.label_tag }}
+                                                                {{ form.curbside_pickup }}
+                                                            </div>
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.delivery.errors }}
+                                                                {{ form.delivery.label_tag }}
+                                                                {{ form.delivery }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="fieldWrapper form" style="width:200px">
+                                                            {{ form.body.errors }}
+                                                            {{ form.body.label_tag }}<br />
+                                                            {{ form.body }}
+                                                        </div> <br />
+                                                        <button type="submit" , value="submit" ,
+                                                                class="btn btn-secondary">
+                                                            Submit
+                                                        </button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                         </div>
                                 </div>
