@@ -4,7 +4,8 @@
 <head>
         <title>Home</title>
         <!--Google Maps API: 
-        https://developers.google.com/maps/documentation/javascript/overview#maps_map_simple-html-->
+        https://developers.google.com/maps/documentation/javascript/overview#maps_map_simple-html
+        https://developers.google.com/maps/documentation/javascript/examples/places-searchbox-->
 
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
         <style type="text/css">
@@ -20,6 +21,67 @@
                         height: 100%;
                         margin: 0;
                         padding: 0;
+                }
+
+                #description {
+                        font-family: Roboto;
+                        font-size: 15px;
+                        font-weight: 300;
+                }
+
+                #infowindow-content {
+                        display: none;
+                }
+
+                #map #infowindow-content {
+                        display: inline;
+                }
+
+                .pac-card {
+                        margin: 10px 10px 0 0;
+                        border-radius: 2px 0 0 2px;
+                        box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        outline: none;
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+                        background-color: #fff;
+                        font-family: Roboto;
+                }
+
+                #pac-container {
+                        padding-bottom: 12px;
+                        margin-right: 12px;
+                }
+
+                .pac-controls {
+                        display: inline-block;
+                        padding: 5px 11px;
+                }
+
+                .pac-controls label {
+                        font-family: Roboto;
+                        font-size: 13px;
+                        font-weight: 300;
+                }
+
+                #pac-input {
+                        background-color: #fff;
+                        font-family: Roboto;
+                        font-size: 15px;
+                        font-weight: 300;
+                        margin-left: 12px;
+                        padding: 0 11px 0 13px;
+                        text-overflow: ellipsis;
+                        width: 400px;
+                }
+
+                #pac-input:focus {
+                        border-color: #4d90fe;
+                }
+
+
+                #target {
+                        width: 345px;
                 }
         </style>
         <script>
@@ -110,7 +172,52 @@
                                         marker.setPosition(location);
                                 }
                         }
+
+                        // Create the search box and link it to the UI element.
+                        const input = document.getElementById("pac-input");
+                        const searchBox = new google.maps.places.SearchBox(input);
+                        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                        // Bias the SearchBox results towards current map's viewport.
+                        map.addListener("bounds_changed", () => {
+                                searchBox.setBounds(map.getBounds());
+                        });
+                        // Listen for the event fired when the user selects a prediction and retrieve
+                        // more details for that place.
+                        searchBox.addListener("places_changed", () => {
+                        const places = searchBox.getPlaces();
+
+                        if (places.length == 0) {
+                                return;
+                        }
+
+                        // For each place, get the icon, name and location.
+                        const bounds = new google.maps.LatLngBounds();
+                        places.forEach((place) => {
+                        if (!place.geometry || !place.geometry.location) {
+                                console.log("Returned place contains no geometry");
+                                return;
+                        }
+                        const icon = {
+                                url: place.icon,
+                                size: new google.maps.Size(71, 71),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(17, 34),
+                                scaledSize: new google.maps.Size(25, 25),
+                        };
+
+
+                        if (place.geometry.viewport) {
+                                // Only geocodes have viewport.
+                                bounds.union(place.geometry.viewport);
+                        } else {
+                                bounds.extend(place.geometry.location);
+                        }
+                        });
+                        map.fitBounds(bounds);
+                        });
                 }
+
+
         </script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -128,6 +235,13 @@
                 <div class="row">
                         <div class="col">
                                 <!--Google maps-->
+                                
+                                <input
+                                id="pac-input"
+                                class="controls"
+                                type="text"
+                                placeholder="Enter a location and click on the icon to view details"
+                                />
                                 <div id="map" style="width:60vw; height: 80vh; margin-top:10px; margin-bottom: 10px;">
                                 </div>
                                 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->

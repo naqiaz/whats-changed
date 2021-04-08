@@ -90,7 +90,16 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
+    #     'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'dbcavffnso531b',
+    #     'USER': 'mwdpnbzvoexrxr',
+    #     'PASSWORD': 'e5a891d6ead9268d145cb62eed89bdc325082b81649a0050ea862d28ccb8e8f6',
+    #     'HOST': 'ec2-54-235-139-166.compute-1.amazonaws.com',
+    #     'PORT': '5432',
+    # }
 }
+
 
 
 # Password validation
