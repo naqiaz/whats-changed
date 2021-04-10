@@ -3,8 +3,8 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout as auth_logout
-from .models import Business, BusinessInfo
-from .models import BusinessForm
+from .models import Business, BusinessInfo, Reply
+from .models import BusinessForm, ReplyForm
 from django.views.generic import DetailView
 
 
@@ -113,6 +113,37 @@ def profile(request,username):
         else:
             form = BusinessForm()
             return render(request,'changed/home.html',{'form':form})   
+def reply(request,id):
+    #this page shows the respective profile and all of the user's reviews, when "profile" is clicked
+        if (BusinessInfo.objects.filter(id=id).exists()):
+            comment = BusinessInfo.objects.get(id=id)
+            replies = comment.reply_set.all() 
+            form = ReplyForm()
+            context = {
+            'comment':comment,
+            'replies':replies,
+            'form':form,
+            }
+            if request.method == 'POST':
+              form = ReplyForm(request.POST)
+              if form.is_valid():
+                reply = form.cleaned_data['reply']
+                user = request.user
+                reply = Reply.objects.create(body=reply,comment=comment,user=user)
+            return render(request,'changed/replies.html',context)   
+        else:
+          form = BusinessForm()
+          return render(request,'changed/home.html',{'form':form})
+
+       
+
+
+
+def reply(request,business_info_id):
+    '''
+    This handles form
+    '''
+    return HttpResponse('Hasd')
 
 def reply(request,business_info_id):
     '''

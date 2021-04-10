@@ -1,0 +1,86 @@
+﻿{% extends 'changed/base_html.html' %}
+
+{% block content %}
+
+
+    <body>
+
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="list-group" style="width:70vw">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" style="color:black">
+                            <u> Covid Compliance Rating:</u>
+                            {{comment.covid_compliance_rating}}
+                        </h5>
+                        <small>{{comment.user.username}}</small>
+                    </div>
+                    <p class="mb-1">
+                        indoor dining:
+                        {%if comment.indoor_dining == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %},
+                        outdoor dining:
+                        {%if comment.indoor_dining == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %}
+                    </p>
+                    <p class="mb-1">
+                        curbside pickup:
+                        {%if comment.curbside_pickup == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %},
+                        delivery:
+                        {%if comment.delivery == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %}
+                    </p>
+                    <p class="mb-1">capacity limit: {{comment.capacity_limit}}</p>
+                    <hr>
+                    <p class="mb-1" style="color:black">{{comment.body}}</p>
+                </div>
+            </div>
+        </div>
+        {% for r in replies %}
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="list-group" style="width:70vw">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" style="color:black">
+                            <small>{{r.user.username}}</small>
+                        </h5>
+                    </div>
+                    <hr>
+                    <p class="mb-1" style="color:black">{{r.body}}</p>
+                </div>
+            </div>
+         </div>
+        {% endfor %}
+    </body>
+        <form action="{% url 'changed:replies' id=comment.id %}" ,
+              method="post">
+            {% csrf_token %}
+            <div class="form-control">
+                <div class="fieldWrapper">
+                    {{ form.reply.errors }}
+                    {{ form.reply.label_tag }}
+                    {{ form.reply }}
+                </div>
+                <br />
+                <button type="submit" , value="submit" ,
+                        class="btn btn-secondary">
+                    Submit
+                </button>
+            </div>
+        </form>
+    </body>
+{% endblock %}
+
