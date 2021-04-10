@@ -7,6 +7,7 @@ from .models import Business, BusinessInfo
 from .models import BusinessForm
 from django.views.generic import DetailView
 
+
 # Create your views here.
 def index(request):
     if request.user.is_authenticated:
@@ -71,7 +72,7 @@ def writeReview(request):
                                                            indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body)
                 print(business_name)
                 print(user.username)
-                print(review_text)
+                print(body)
                 return HttpResponseRedirect(reverse('changed:index'))
         return HttpResponseRedirect(reverse('changed:index'))
     else:
@@ -112,6 +113,12 @@ def profile(request,username):
         else:
             form = BusinessForm()
             return render(request,'changed/home.html',{'form':form})   
+
+def reply(request,business_info_id):
+    '''
+    This handles form
+    '''
+    return HttpResponse('Hasd')
 
     
     

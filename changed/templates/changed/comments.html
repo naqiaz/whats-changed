@@ -45,11 +45,19 @@
                         &#10007;
                         {% endif %}
                     </p>
-                    <p class="mb-1">capacity limit: {{comment.capacity_limit}}</p>
+                    <p class="mb-1">capacity limit: {{comment.capacity_limit}}</p> 
                     <hr>
                     <p class="mb-1" style="color:black">{{comment.body}}</p>
 
-                </a>
+                    <form action="{% url 'changed:reply' comment.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" value="submit" class="btn btn-primary"> 
+                            Reply
+                        </button>
+                    </form>
+
+                </a> 
+               
 
             </div>
             {% endfor %}
