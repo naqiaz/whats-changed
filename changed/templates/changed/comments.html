@@ -1,0 +1,59 @@
+{% extends 'changed/base_html.html' %}
+
+{% block content %}
+<!--Content goes here-->
+
+<body>
+
+    <h2 class="text-center">{{business_name}}</h2>
+    <h5 class="text-center">COVID Guideline Reviews</h5>
+    {% for comment in business_info %}
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="list-group" style="width:70vw">
+                <a href="{% url 'changed:replies' id=comment.id %}" class="list-group-item list-group-item-action" aria-current="false">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h5 class="mb-1" style="color:black">
+                            <u> Covid Compliance Rating:</u>
+                            {{comment.covid_compliance_rating}}
+                        </h5>
+                        <small>{{comment.user.username}}</small>
+                    </div>
+                    <p class="mb-1">
+                        indoor dining:
+                        {%if comment.indoor_dining == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %},
+                        outdoor dining:
+                        {%if comment.indoor_dining == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %}
+                    </p>
+                    <p class="mb-1">
+                        curbside pickup:
+                        {%if comment.curbside_pickup == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %},
+                        delivery:
+                        {%if comment.delivery == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %}
+                    </p>
+                    <p class="mb-1">capacity limit: {{comment.capacity_limit}}</p>
+                    <hr>
+                    <p class="mb-1" style="color:black">{{comment.body}}</p>
+                </a>
+
+            </div>
+            {% endfor %}
+        </div>
+</body>
+{% endblock %}
