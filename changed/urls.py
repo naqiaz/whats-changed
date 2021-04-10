@@ -14,5 +14,4 @@ urlpatterns = [
     #shows comments/reviews for one particular business
     path('reviews',views.show_reviews,name='specificreview'),
     path('profile/<str:username>',views.profile,name='profile'),
-    path('reply/<int:business_info_id>',views.reply,name='reply'),
 ]
