@@ -29,13 +29,6 @@ class BusinessInfo(models.Model):
     def __str__(self):
         businessinfo = self.business.business_name + ' '+str(self.covid_compliance_rating)
         return businessinfo
-class Reply(models.Model):
-    comment = models.ForeignKey(BusinessInfo, on_delete=models.CASCADE)
-    user = models.ForeignKey(User,on_delete=models.CASCADE)
-    body = models.TextField(default="")
-    def __str__(self):
-        reply = self.body
-        return reply
 class BusinessForm(forms.Form):
    covid_compliance_rating = forms.TypedChoiceField(label="COVID Compliance Rating",choices=[(x,x) for x in range(1,6)],coerce=int,required=False)
    capacity_limit =forms.IntegerField(label="Capacity Limit",validators=[MinValueValidator(0)], required=False)
@@ -44,10 +37,6 @@ class BusinessForm(forms.Form):
    curbside_pickup = forms.BooleanField(label="Curbside Pickup", required=False)
    delivery =forms.BooleanField(label="Delivery",required=False)
    body = forms.CharField(label="Additional Comments",widget=forms.Textarea,required=False)
-class ReplyForm(forms.Form):
-    reply = forms.CharField(label="Reply", widget=forms.Textarea)
-
-
 
 
 
