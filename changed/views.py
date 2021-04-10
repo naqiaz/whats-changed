@@ -135,15 +135,5 @@ def reply(request,id):
           form = BusinessForm()
           return render(request,'changed/home.html',{'form':form})
 
-       
-
-
-
-def reply(request,business_info_id):
-    '''
-    This handles form
-    '''
-    return HttpResponse('Hasd')
-
     
     
