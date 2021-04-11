@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply
 from .models import BusinessForm, ReplyForm
 from django.views.generic import DetailView
-from .views import *
+
 
 
 # Create your views here.

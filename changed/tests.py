@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply, ReplyForm, BusinessForm
 from http import HTTPStatus
+from .views import writeReview
 client= Client()
 # Create your tests here.
 class AuthTestCase(TestCase):
@@ -65,10 +66,7 @@ class ReviewTestCase(TestCase):
     
     def test_submitting_review(self):
         business = Business.objects.get(business_name='Test business')
-        request = RequestFactory().get('/')
-        request.user = self.user
-        print('Request username is '+request.user.username)
-        client.post(reverse('changed:processreview'), data={
+        request = RequestFactory().post('/review_processing/',{
             'businessName': business.business_name,
             'businessPid': business.business_pid,
             'covid_compliance_rating': 5,
@@ -78,8 +76,12 @@ class ReviewTestCase(TestCase):
             'curbside_pickup': False,
             'delivery': False,
             'body': '',
+
         })
-        self.assertTrue(True)
+        request.user = self.user
+        response = writeReview(request)
+        
+        self.assertEqual(response.status_code,302)
 
     
 
