@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply, ReplyForm, BusinessForm
 from http import HTTPStatus
-from .views import writeReview
+from .views import writeReview, reply
 client= Client()
 # Create your tests here.
 class AuthTestCase(TestCase):
@@ -47,7 +47,7 @@ class ReviewTestCase(TestCase):
     #This tests writing a review for a business
     def setUp(self):
         self.user = User.objects.create_user(username='test')
-        print('Creating userrr')
+        
         login = self.client.login(username='testuser',password='password')
         test_business = Business.objects.create(business_name = 'Test business', business_pid='', category= 'Test')
         self.factory = RequestFactory()
@@ -82,8 +82,30 @@ class ReviewTestCase(TestCase):
         response = writeReview(request)
         
         self.assertEqual(response.status_code,302)
+        self.assertTrue(BusinessInfo.objects.filter(business = business, user = request.user, body = '').exists())
 
+
+class ReplyTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='password')
+        login = self.client.login(username='testuser',password='password')
+        test_business = Business.objects.create(business_name = 'Test bussiness', business_pid='', category= 'Test')
+        test_business_info = BusinessInfo.objects.create(business = test_business, body= 'Test Review', user = self.user)
+        self.factory = RequestFactory()
     
+    def test_writing_reply_to_a_review(self):
+        test_id = BusinessInfo.objects.get(body = 'Test Review').id
+        url = '/replies/'+str(test_id)+'/'
+        
+        request = RequestFactory().post(url, {
+            'reply': 'Test reply body',
+        })
+        request.user = self.user
+        
+        response = reply(request,test_id)
+        
+        self.assertEqual(response.status_code,200)
+
 
         
 

@@ -129,6 +129,7 @@ def reply(request,id):
               if form.is_valid():
                 reply = form.cleaned_data['reply']
                 user = request.user
+                
                 reply = Reply.objects.create(body=reply,comment=comment,user=user)
             return render(request,'changed/replies.html',context)   
         else:
