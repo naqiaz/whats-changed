@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply, ReplyForm, BusinessForm
 from http import HTTPStatus
+client= Client()
 # Create your tests here.
 class AuthTestCase(TestCase):
     def setUp(self):
@@ -44,10 +45,12 @@ class AuthTestCase(TestCase):
 class ReviewTestCase(TestCase):
     #This tests writing a review for a business
     def setUp(self):
-        self.user = User.objects.create_user(username='testuser',password='password')
+        self.user = User.objects.create_user(username='test')
+        print('Creating userrr')
         login = self.client.login(username='testuser',password='password')
         test_business = Business.objects.create(business_name = 'Test business', business_pid='', category= 'Test')
         self.factory = RequestFactory()
+        
 
         #create example user
     def test_business_form_validity(self):
@@ -59,7 +62,25 @@ class ReviewTestCase(TestCase):
             'outdoor_dining': False,
         })
         self.assertTrue(form.is_valid())
-        # print(request)
+    
+    def test_submitting_review(self):
+        business = Business.objects.get(business_name='Test business')
+        request = RequestFactory().get('/')
+        request.user = self.user
+        print('Request username is '+request.user.username)
+        client.post(reverse('changed:processreview'), data={
+            'businessName': business.business_name,
+            'businessPid': business.business_pid,
+            'covid_compliance_rating': 5,
+            'capacity_limit': 25,
+            'indoor_dining': True,
+            'outdoor_dining': False,
+            'curbside_pickup': False,
+            'delivery': False,
+            'body': '',
+        })
+        self.assertTrue(True)
+
     
 
         

@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply
 from .models import BusinessForm, ReplyForm
 from django.views.generic import DetailView
+from .views import *
 
 
 # Create your views here.
@@ -32,7 +33,6 @@ def writeReview(request):
     '''
     TODO: Business = business_name, BusinessInfo = covid_compliance_rating
     '''
-    user = request.user
     if request.method == 'POST':
         form = BusinessForm(request.POST)
         if form.is_valid():
@@ -62,7 +62,7 @@ def writeReview(request):
                 business_info = BusinessInfo.objects.create(business=business,user=user, covid_compliance_rating=covid_compliance_rating,capacity_limit=capacity_limit,
                                                            indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body) 
                 print(business_name)
-                print(user.username)
+                #print(request.user.username)
                 print(body)
                 return HttpResponseRedirect(reverse('changed:index'))
             else:
@@ -71,7 +71,7 @@ def writeReview(request):
                 business_info = BusinessInfo.objects.create(business=business,user=user, covid_compliance_rating=covid_compliance_rating,capacity_limit=capacity_limit,
                                                            indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body)
                 print(business_name)
-                print(user.username)
+                #print(user.username)
                 print(body)
                 return HttpResponseRedirect(reverse('changed:index'))
         return HttpResponseRedirect(reverse('changed:index'))
