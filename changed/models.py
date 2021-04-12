@@ -9,10 +9,20 @@ from django.core.validators import MinValueValidator
 class Business(models.Model):
     business_name = models.TextField()
     business_pid = models.TextField()
-    #average_compliance_rating = models.IntegerField()
+    average_rating = models.FloatField()
     category = models.CharField(max_length = 50)
     def __str__(self):
         return self.business_name
+
+    def average(self):
+        reviews = BusinessInfo.objects.filter(business=self)
+        rating = 0
+        for r in reviews:
+            rating += r.covid_compliance_rating
+        rating = rating/len(reviews)
+        self.average_rating = rating
+        self.save()
+        return
 
 class BusinessInfo(models.Model):
     #Business info relies on the 
@@ -26,19 +36,23 @@ class BusinessInfo(models.Model):
     curbside_pickup = models.BooleanField(default=False)
     delivery = models.BooleanField(default=False)
     body = models.TextField(default="")
+    published_date = models.DateTimeField()
     def __str__(self):
         businessinfo = self.business.business_name + ' '+str(self.covid_compliance_rating)
         return businessinfo
+
 class Reply(models.Model):
     comment = models.ForeignKey(BusinessInfo, on_delete=models.CASCADE)
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     body = models.TextField(default="")
+    published_date = models.DateTimeField()
     def __str__(self):
         reply = self.body
         return reply
+
 class BusinessForm(forms.Form):
-   covid_compliance_rating = forms.TypedChoiceField(label="COVID Compliance Rating",choices=[(x,x) for x in range(1,6)],coerce=int,required=False)
-   capacity_limit =forms.IntegerField(label="Capacity Limit",validators=[MinValueValidator(0)], required=False)
+   covid_compliance_rating = forms.TypedChoiceField(label="COVID Compliance Rating",choices=[(x,x) for x in range(1,6)],coerce=int,required=True)
+   capacity_limit =forms.IntegerField(label="Capacity Limit",validators=[MinValueValidator(0)], required=True)
    indoor_dining = forms.BooleanField(label="Indoor Dining", required=False)
    outdoor_dining = forms.BooleanField(label="Outdoor Dining", required=False)
    curbside_pickup = forms.BooleanField(label="Curbside Pickup", required=False)

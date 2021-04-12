@@ -15,6 +15,7 @@
                             {{comment.covid_compliance_rating}}
                         </h5>
                         <small>{{comment.user.username}}</small>
+                        <small>{{comment.published_date}}</small>
                         <p class="mb-1">
                             indoor dining:
                             {%if comment.indoor_dining == True %}
@@ -57,6 +58,7 @@
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1" style="color:black"></h5>
                             <small style="color:#3d3d3d; margin-right:10px">{{r.user.username}}</small>
+                            <small style="color:#3d3d3d; margin-right:10px">{{r.published_date}}</small>
                         </div>
                         <div class="card-body">
                             <p class="mb-1" style="color:#3d3d3d">{{r.body}}</p>

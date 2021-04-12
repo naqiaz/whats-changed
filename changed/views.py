@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply
 from .models import BusinessForm, ReplyForm
 from django.views.generic import DetailView
+import datetime
 
 
 
@@ -54,22 +55,27 @@ def writeReview(request):
            # print(delivery)
             body = form.cleaned_data['body']
            # print(body)
+            published_date = datetime.datetime.now()
             if(Business.objects.filter(business_name=business_name,business_pid=business_pid).exists()):
             #the business already exists, don't create a duplicate
                 print('The business already exists')
                 business = Business.objects.get(business_name=business_name,business_pid=business_pid)
                 user = User.objects.get(username=request.user.username)
                 business_info = BusinessInfo.objects.create(business=business,user=user, covid_compliance_rating=covid_compliance_rating,capacity_limit=capacity_limit,
-                                                           indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body) 
+                                                           indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body,
+                                                           published_date = published_date)
+                business.average()
                 print(business_name)
                 #print(request.user.username)
                 print(body)
                 return HttpResponseRedirect(reverse('changed:index'))
             else:
-                business = Business.objects.create(business_name=business_name,business_pid=business_pid)
+                business = Business.objects.create(business_name=business_name,business_pid=business_pid,average_rating=0)
                 user = User.objects.get(username=request.user.username)
                 business_info = BusinessInfo.objects.create(business=business,user=user, covid_compliance_rating=covid_compliance_rating,capacity_limit=capacity_limit,
-                                                           indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body)
+                                                           indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body,
+                                                           published_date=published_date)
+                business.average()
                 print(business_name)
                 #print(user.username)
                 print(body)
@@ -129,8 +135,9 @@ def reply(request,id):
               if form.is_valid():
                 reply = form.cleaned_data['reply']
                 user = request.user
+                published_date = datetime.datetime.now()
                 
-                reply = Reply.objects.create(body=reply,comment=comment,user=user)
+                reply = Reply.objects.create(body=reply,comment=comment,user=user,published_date=published_date)
             return render(request,'changed/replies.html',context)   
         else:
           form = BusinessForm()
