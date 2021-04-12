@@ -1,0 +1,87 @@
+﻿{% extends 'changed/base_html.html' %}
+
+{% block content %}
+
+
+<body>
+
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="card" style="width:70vw; margin:1vh">
+                <div class="d-flex w-100 justify-content-between">
+                    <div class="card-body">
+                        <h5 class="mb-1" style="color:black">
+                            <u> Covid Compliance Rating:</u>
+                            {{comment.covid_compliance_rating}}
+                        </h5>
+                        <small>{{comment.user.username}}</small>
+                        <p class="mb-1">
+                            indoor dining:
+                            {%if comment.indoor_dining == True %}
+                            &#10003;
+                            {% else %}
+                            &#10007;
+                            {% endif %},
+                            outdoor dining:
+                            {%if comment.indoor_dining == True %}
+                            &#10003;
+                            {% else %}
+                            &#10007;
+                            {% endif %}
+                        </p>
+                        <p class="mb-1">
+                            curbside pickup:
+                            {%if comment.curbside_pickup == True %}
+                            &#10003;
+                            {% else %}
+                            &#10007;
+                            {% endif %},
+                            delivery:
+                            {%if comment.delivery == True %}
+                            &#10003;
+                            {% else %}
+                            &#10007;
+                            {% endif %}
+                        </p>
+                        <p class="mb-1">capacity limit: {{comment.capacity_limit}}</p>
+                        <hr>
+                        <p class="mb-1" style="color:black">{{comment.body}}</p>
+                    </div>
+                </div>
+            </div>
+
+            {% for r in replies %}
+            <div class="container">
+                <div class="row justify-content-md-center">
+                    <div class="card" style="width:70vw; background-color: #f5f5f5;">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1" style="color:black"></h5>
+                            <small style="color:#3d3d3d; margin-right:10px">{{r.user.username}}</small>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-1" style="color:#3d3d3d">{{r.body}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <div class="card" style="width:70vw; margin:2vh">
+            <form action="{% url 'changed:replies' id=comment.id %}" , method="post" style="margin-bottom:50px">
+                <div class="form-group"> 
+                    {% csrf_token %} 
+                <h5 class="mb-1" style="color:black">Reply</h5>
+                 
+                  <div class="fieldWrapper" style="width:70vw; background-color: #f5f5f5;">
+                    {{ form.reply.errors }}
+                    {{ form.reply }}
+                </div> 
+                  <small id="emailHelp" class="form-text text-muted">Fill in your response above!!.</small>
+                </div>
+                <button type="submit", value = "submit", class="btn btn-primary">Submit</button>
+              </form>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

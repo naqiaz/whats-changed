@@ -18,13 +18,16 @@
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'changed:index' %}">Home<span class="sr-only">(current)</span></a>
                 </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'changed:about' %}">About<span class="sr-only">(current)</span></a>
+                </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'changed:logout' %}">
                         Logout<span class="sr-only">(current)</span>
                     </a>
                 </li>
-                
+
                 {% else %}
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'changed:index' %}">Login<span class="sr-only">(current)</span></a>
@@ -36,18 +39,9 @@
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <div style="margin-right:5px">
-                            <a style="color:white" class="nav-link" href="{% url 'changed:profile' username=user.username %}">
-                                {{user.username}} <span class="sr-only">(current)</span>
-                            </a>
-                </div>
-                <div class="dropdown">
-                    <a class="" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img class="user-icon" width="25" height="25"
-                            src="https://live.staticflickr.com/65535/51003067240_f1b5e0e7f1_o.png">
+                    <a style="color:white" class="nav-link" href="{% url 'changed:profile' username=user.username %}">
+                        {{user.username}} <span class="sr-only">(current)</span>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'changed:logout' %}">Log Out</a>
-                    </div>
                 </div>
         </div>
         </ul>

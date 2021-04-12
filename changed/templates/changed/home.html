@@ -4,7 +4,8 @@
 <head>
         <title>Home</title>
         <!--Google Maps API: 
-        https://developers.google.com/maps/documentation/javascript/overview#maps_map_simple-html-->
+        https://developers.google.com/maps/documentation/javascript/overview#maps_map_simple-html
+        https://developers.google.com/maps/documentation/javascript/examples/places-searchbox-->
 
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
         <style type="text/css">
@@ -20,6 +21,67 @@
                         height: 100%;
                         margin: 0;
                         padding: 0;
+                }
+
+                #description {
+                        font-family: Roboto;
+                        font-size: 15px;
+                        font-weight: 300;
+                }
+
+                #infowindow-content {
+                        display: none;
+                }
+
+                #map #infowindow-content {
+                        display: inline;
+                }
+
+                .pac-card {
+                        margin: 10px 10px 0 0;
+                        border-radius: 2px 0 0 2px;
+                        box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        outline: none;
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+                        background-color: #fff;
+                        font-family: Roboto;
+                }
+
+                #pac-container {
+                        padding-bottom: 12px;
+                        margin-right: 12px;
+                }
+
+                .pac-controls {
+                        display: inline-block;
+                        padding: 5px 11px;
+                }
+
+                .pac-controls label {
+                        font-family: Roboto;
+                        font-size: 13px;
+                        font-weight: 300;
+                }
+
+                #pac-input {
+                        background-color: #fff;
+                        font-family: Roboto;
+                        font-size: 15px;
+                        font-weight: 300;
+                        margin-left: 12px;
+                        padding: 0 11px 0 13px;
+                        text-overflow: ellipsis;
+                        width: 400px;
+                }
+
+                #pac-input:focus {
+                        border-color: #4d90fe;
+                }
+
+
+                #target {
+                        width: 345px;
                 }
         </style>
         <script>
@@ -110,7 +172,52 @@
                                         marker.setPosition(location);
                                 }
                         }
+
+                        // Create the search box and link it to the UI element.
+                        const input = document.getElementById("pac-input");
+                        const searchBox = new google.maps.places.SearchBox(input);
+                        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+                        // Bias the SearchBox results towards current map's viewport.
+                        map.addListener("bounds_changed", () => {
+                                searchBox.setBounds(map.getBounds());
+                        });
+                        // Listen for the event fired when the user selects a prediction and retrieve
+                        // more details for that place.
+                        searchBox.addListener("places_changed", () => {
+                        const places = searchBox.getPlaces();
+
+                        if (places.length == 0) {
+                                return;
+                        }
+
+                        // For each place, get the icon, name and location.
+                        const bounds = new google.maps.LatLngBounds();
+                        places.forEach((place) => {
+                        if (!place.geometry || !place.geometry.location) {
+                                console.log("Returned place contains no geometry");
+                                return;
+                        }
+                        const icon = {
+                                url: place.icon,
+                                size: new google.maps.Size(71, 71),
+                                origin: new google.maps.Point(0, 0),
+                                anchor: new google.maps.Point(17, 34),
+                                scaledSize: new google.maps.Size(25, 25),
+                        };
+
+
+                        if (place.geometry.viewport) {
+                                // Only geocodes have viewport.
+                                bounds.union(place.geometry.viewport);
+                        } else {
+                                bounds.extend(place.geometry.location);
+                        }
+                        });
+                        map.fitBounds(bounds);
+                        });
                 }
+
+
         </script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -128,6 +235,13 @@
                 <div class="row">
                         <div class="col">
                                 <!--Google maps-->
+                                
+                                <input
+                                id="pac-input"
+                                class="controls"
+                                type="text"
+                                placeholder="Enter a location and click on the icon to view details"
+                                />
                                 <div id="map" style="width:60vw; height: 80vh; margin-top:10px; margin-bottom: 10px;">
                                 </div>
                                 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
@@ -168,93 +282,55 @@
 
                                                 <div class="collapse" id="reviewform">
                                                         <!--review form-->
-                                                        <form action="{% url 'changed:processreview' %}" ,
-                                                                method="POST">
-                                                                {% csrf_token %}
-                                                                <!--Business name-->
-                                                                <input hidden id="businessName" name="businessName">
-                                                                <!--Business pid-->
-                                                                <input hidden id="pid" name="businessPid" />
-                                                                <!--covid policy rating-->
-                                                                <div class="form-group">
-                                                                        <br>
-                                                                        <label for="rating">COVID Policy
-                                                                                Compliance
-                                                                                Rating:</label>
-                                                                        <select class="form-control" id="rating"
-                                                                                required>
-                                                                                <option value="" selected disabled>--
-                                                                                        select an
-                                                                                        option --</option>
-                                                                                <option id="1" , value="1">1</option>
-                                                                                <option id="2" , value="2">2</option>
-                                                                                <option id="3" , value="3">3</option>
-                                                                                <option id="4" ,value="4">4</option>
-                                                                                <option id="5" , value="5">5</option>
-                                                                        </select>
-                                                                </div>
-                                                                <!--covid dining policy checkboxes-->
-
-                                                                <div class="form-group">
-                                                                        <div class="form-check">
-                                                                                <div>
-                                                                                        <input class="form-check-input"
-                                                                                                type="checkbox" value=""
-                                                                                                id="indoor">
-                                                                                        <label class="form-check-label"
-                                                                                                for="indoor">
-                                                                                                Indoor
-                                                                                                Dining</label>
-                                                                                </div>
-                                                                                <div>
-                                                                                        <input class="form-check-input"
-                                                                                                type="checkbox" value=""
-                                                                                                id="outdoor">
-                                                                                        <label class="form-check-label"
-                                                                                                for="outdoor">
-                                                                                                Outdoor
-                                                                                                Dining</label>
-                                                                                </div>
-                                                                                <div>
-                                                                                        <input class="form-check-input"
-                                                                                                type="checkbox" value=""
-                                                                                                id="pickup">
-                                                                                        <label class="form-check-label"
-                                                                                                for="pickup">
-                                                                                                Pickup</label>
-                                                                                </div>
-                                                                                <div>
-                                                                                        <input class="form-check-input"
-                                                                                                type="checkbox" value=""
-                                                                                                id="curbside">
-                                                                                        <label class="form-check-label"
-                                                                                                for="curbside">
-                                                                                                Curbside</label>
-                                                                                </div>
-                                                                        </div>
-                                                                </div>
-                                                                <!-- place to specify capacity limit, or "none" if there isn't one-->
-                                                                <div class="form-group">
-                                                                        <label for="title"
-                                                                                class="col-form-label">Capacity
-                                                                                Limit:</label>
-                                                                        <input type="text" class="form-control"
-                                                                                id="capacity-limit">
-                                                                </div>
-
-                                                                <!--place for other comments-->
-                                                                <div class="form-group">
-                                                                        <label for="review-text"
-                                                                                class="col-form-label">Additional
-                                                                                Comments:</label>
-                                                                        <textarea class="form-control" id="review-text"
-                                                                                name="review-text"></textarea>
-                                                                </div>
-                                                                <!-- submit button -->
-                                                                <!-- TODO: on submit, save review to database -->
-                                                                <button type="submit"
-                                                                        class="btn btn-secondary">Submit</button>
-                                                        </form>
+                                                    <form action="{% url 'changed:processreview' %}" ,
+                                                          method="post">
+                                                        {% csrf_token %}
+                                                        <input hidden id="businessName" name="businessName" />
+                                                        <input hidden id="pid" name="businessPid" />
+                                                        <div class="form-control">
+                                                        <div class="fieldWrapper">
+                                                            {{ form.covid_compliance_rating.errors }}
+                                                            {{ form.covid_compliance_rating.label_tag }}
+                                                            {{ form.covid_compliance_rating }}
+                                                        </div>
+                                                        <div class="fieldWrapper" style="width:200px">
+                                                            {{ form.capacity_limit.errors }}
+                                                            {{ form.capacity_limit.label_tag }}
+                                                            {{ form.capacity_limit }}
+                                                        </div> <br />
+                                                        <div class="form-group">
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.indoor_dining.errors }}
+                                                                {{ form.indoor_dining.label_tag }}
+                                                                {{ form.indoor_dining }}
+                                                            </div>
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.outdoor_dining.errors }}
+                                                                {{ form.outdoor_dining.label_tag }}
+                                                                {{ form.outdoor_dining }}
+                                                            </div>
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.curbside_pickup.errors }}
+                                                                {{ form.curbside_pickup.label_tag }}
+                                                                {{ form.curbside_pickup }}
+                                                            </div>
+                                                            <div class="fieldWrapper col-med-4 radio-inline">
+                                                                {{ form.delivery.errors }}
+                                                                {{ form.delivery.label_tag }}
+                                                                {{ form.delivery }}
+                                                            </div>
+                                                        </div>
+                                                        <div class="fieldWrapper form" style="width:200px">
+                                                            {{ form.body.errors }}
+                                                            {{ form.body.label_tag }}<br />
+                                                            {{ form.body }}
+                                                        </div> <br />
+                                                        <button type="submit" , value="submit" ,
+                                                                class="btn btn-secondary">
+                                                            Submit
+                                                        </button>
+                                                        </div>
+                                                    </form>
                                                 </div>
                                         </div>
                                 </div>
