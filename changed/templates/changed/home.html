@@ -37,6 +37,11 @@
                         display: inline;
                 }
 
+                .card {
+                display: none;
+                visibility: hidden;
+                }
+
                 .pac-card {
                         margin: 10px 10px 0 0;
                         border-radius: 2px 0 0 2px;
@@ -159,7 +164,11 @@
                         google.maps.event.addListener(map, 'click', function (event) {
                                 placeMarker(event.latLng);
                         });
-
+                        function openDiv() {
+                            var element = document.getElementById("businessCard")
+                            element.style.display = "block"
+                            element.style.visibility = "visible"
+                        }
                         function placeMarker(location) {
 
                                 if (marker == null) {
@@ -171,6 +180,7 @@
                                 else {
                                         marker.setPosition(location);
                                 }
+                                openDiv()
                         }
 
                         // Create the search box and link it to the UI element.
@@ -251,7 +261,7 @@
                         <div class="col">
                                 <!-- card containing business info and review form-->
                                 <!--TODO: make card and its contents show up ONLY when we've clicked on a business (shouldn't show up when it's empty)-->
-                                <div class="card" style="margin:2vh">
+                                <div class="card" id="businessCard" style="margin:2vh">
                                         <h5 class="card-header text-center" style="font-weight: bold; color:#5d7fa3"
                                                 id="name" name="name">
                                         </h5>
