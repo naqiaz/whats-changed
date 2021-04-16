@@ -7,6 +7,7 @@ from .models import Business, BusinessInfo, Reply
 from .models import BusinessForm, ReplyForm
 from django.views.generic import DetailView
 import datetime
+from django.http import JsonResponse
 
 
 
@@ -16,14 +17,23 @@ def index(request):
             form = BusinessForm()
             return render(request,'changed/home.html',{'form':form})
     else:
-            return render(request,'changed/login.html')
+            form = BusinessForm()
+            return render(request,'changed/login.html',{'form':form})
 
+def rating(request):
+    name = request.GET['name']
+    business = Business.objects.get(business_name=name)
+    data = {
+        'rtg': business.average_rating,
+    }
+    return JsonResponse(data)
 
 def about(request):
     if request.user.is_authenticated:
             return render(request,'changed/about.html')
     else:
-            return render(request,'changed/login.html')
+            form = BusinessForm()
+            return render(request,'changed/login.html',{'form':form})
 
 
 def signup(request):
@@ -83,7 +93,8 @@ def writeReview(request):
         return HttpResponseRedirect(reverse('changed:index'))
     else:
         form = BusinessForm()
-    return render(request,'changed/home.html',{'form':form})
+        return render(request,'changed/home.html',{'form':form})
+
 
 def show_reviews(request):
     #this page shows the respective business and all of its comments, shown when "Read review" is clicked
@@ -92,7 +103,7 @@ def show_reviews(request):
         if (Business.objects.filter(business_name=business_name,business_pid=business_pid).exists()):
             business = Business.objects.get(business_name=business_name,business_pid=business_pid)
             business_name = business.business_name
-            business_info = business.businessinfo_set.all()
+            business_info = business.businessinfo_set.all().order_by('-published_date')
             print(business_name) 
             context = {
             'business_name':business_name,
@@ -109,7 +120,7 @@ def profile(request,username):
         if (User.objects.filter(username=username).exists()):
             user = User.objects.get(username=username)
             username = user.username
-            business_info = user.businessinfo_set.all()
+            business_info = user.businessinfo_set.all().order_by('-published_date')
             print(username) 
             context = {
             'user':user,
@@ -118,12 +129,13 @@ def profile(request,username):
             return render(request,'changed/profile.html',context)
         else:
             form = BusinessForm()
-            return render(request,'changed/home.html',{'form':form})   
+            return render(request,'changed/home.html',{'form':form})  
+
 def reply(request,id):
     #this page shows the respective profile and all of the user's reviews, when "profile" is clicked
         if (BusinessInfo.objects.filter(id=id).exists()):
             comment = BusinessInfo.objects.get(id=id)
-            replies = comment.reply_set.all() 
+            replies = comment.reply_set.all().order_by('published_date') 
             form = ReplyForm()
             context = {
             'comment':comment,
@@ -140,5 +152,5 @@ def reply(request,id):
                 reply = Reply.objects.create(body=reply,comment=comment,user=user,published_date=published_date)
             return render(request,'changed/replies.html',context)   
         else:
-          form = BusinessForm()
-          return render(request,'changed/home.html',{'form':form})
+            form = BusinessForm()
+            return render(request,'changed/home.html',{'form':form})

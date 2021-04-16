@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout as auth_logout
+from .models import BusinessForm
 def registerUser(request):
     '''
     registerUser goes hand-in-hand with signup. registerUser captures info from signup and adds the user to the database,
@@ -39,8 +40,10 @@ def auth(request):
         #The user is in the database, log them in
         login(request,verify)
         print("Logged in successfully")
+        form = BusinessForm()
         context={
             'user':verify,
+            'form':form,
         }
         return render(request,'changed/home.html',context)
     else:

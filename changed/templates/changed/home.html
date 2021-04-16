@@ -1,5 +1,6 @@
 ﻿{% extends 'changed/base_html.html' %}
 {% block content %}
+{% load static %}
 
 <head>
         <title>Home</title>
@@ -90,40 +91,53 @@
                 }
         </style>
         <script>
-                // updates the coordinates when we click anywhere on the map
-                function update(coords, lat, lng) {
-                        var result = coords;
-                        var xCoord = lat;
-                        var yCoord = lng;
-                        var output = "The current coordinates are " + result;
-                        var xOutput = "x-value: " + xCoord.toString();
-                        var yOutput = "y-value: " + yCoord.toString();
-                        // Display result
-                        document.getElementById("result").innerHTML = output;   // x and y
-                        document.getElementById("xCoord").innerHTML = xOutput;  // x
-                        document.getElementById("yCoord").innerHTML = yOutput;  // y
-                }
-                // updates the business info when we click a new business (info shown in the card)
-                function updateBusiness(pid, name, addr, rtg, hrs) {
-                        var place = pid;
-                        var business = name;
-                        var address = addr;
-                        var rated = rtg;
-                        var hours = hrs;
-                        var pidOutput = "PID: " + place;
-                        var nameOutput = business;
-                        var addrOutput = address;
-                        var ratingOutput = "Rating: " + rated + "/5";
-                        var hoursOutput = "Hours: " + hours;
-                        // Display result
-                        document.getElementById("pid").innerHTML = pidOutput;
-                        document.getElementById("readPid").innerHTML = pidOutput;
-                        document.getElementById("name").innerHTML = nameOutput;   // name
-                        document.getElementById("addr").innerHTML = addrOutput;   // address
-                        document.getElementById("rating").innerHTML = ratingOutput;   // rating
-                        document.getElementById("hours").innerHTML = hoursOutput;
-                        document.getElementById("businessName").value = nameOutput;
-                        document.getElementById("readBusinessName").value = nameOutput;// name
+            // updates the coordinates when we click anywhere on the map
+            function update(coords, lat, lng) {
+                var result = coords;
+                var xCoord = lat;
+                var yCoord = lng;
+                var output = "The current coordinates are " + result;
+                var xOutput = "x-value: " + xCoord.toString();
+                var yOutput = "y-value: " + yCoord.toString();
+                // Display result
+                document.getElementById("result").innerHTML = output;   // x and y
+                document.getElementById("xCoord").innerHTML = xOutput;  // x
+                document.getElementById("yCoord").innerHTML = yOutput;  // y
+            }
+            // updates the business info when we click a new business (info shown in the card)
+            function updateBusiness(pid, name, addr, rtg, hrs) {
+                var place = pid;
+                var business = name;
+                var address = addr;
+                var rated = rtg;
+                var hours = hrs;
+                var pidOutput = place;
+                var nameOutput = business;
+                var addrOutput = address;
+                var ratingOutput = "Rating: " + rated + "/5";
+                var hoursOutput = "Hours: " + hours;
+                // Display result
+                // document.getElementById("pid").innerHTML = pidOutput;
+                document.getElementById("readPid").innerHTML = pidOutput;
+                document.getElementById("busPid").innerHTML = addrOutput;
+                document.getElementById("name").innerHTML = nameOutput;   // name
+                document.getElementById("addr").innerHTML = addrOutput;   // address
+                document.getElementById("rating").innerHTML = ratingOutput;   // rating
+                document.getElementById("hours").innerHTML = hoursOutput;
+                document.getElementById("businessName").value = nameOutput;
+                document.getElementById("readBusinessName").value = nameOutput;
+                document.getElementById("covidName").value = nameOutput;
+                var name = $('#covidName').val();
+                $.ajax({
+                        url: '/rating',
+                        data: {
+                        'name':name
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+                        $('#avg-rtg').text(data.rtg);
+                        }
+                    });
                 }
                 let map;
 
@@ -151,7 +165,7 @@
                                         function (results) {
                                                 // to see all place details in console, uncomment line below
                                                 var d = new Date()
-                                                updateBusiness(place, results.name, results.formatted_address, results.rating, results.opening_hours.weekday_text[(d.getDay() + 6) % 7])
+                                                updateBusiness(results.place_id, results.name, results.formatted_address, results.rating, results.opening_hours.weekday_text[(d.getDay() + 6) % 7])
                                         }
                                 );
                                 //prevents default info box from appearing
@@ -241,130 +255,130 @@
 
 
 <body>
-        <div class="container-fluid">
-                <div class="row">
-                        <div class="col">
-                                <!--Google maps-->
-                                
-                                <input
-                                id="pac-input"
-                                class="controls"
-                                type="text"
-                                placeholder="Enter a location and click on the icon to view details"
-                                />
-                                <div id="map" style="width:60vw; height: 80vh; margin-top:10px; margin-bottom: 10px;">
-                                </div>
-                                <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-                                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcKs56aiWAYfArUi4E_NH_2VZI2wrBshQ&callback=initMap&libraries=places&v=weekly"
-                                        async></script>
-                        </div>
-                        <div class="col">
-                                <!-- card containing business info and review form-->
-                                <!--TODO: make card and its contents show up ONLY when we've clicked on a business (shouldn't show up when it's empty)-->
-                                <div class="card" id="businessCard" style="margin:2vh">
-                                        <h5 class="card-header text-center" style="font-weight: bold; color:#5d7fa3"
-                                                id="name" name="name">
-                                        </h5>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <!--Google maps-->
 
-                                        <div class="card-body">
-                                                <p style="color:rgb(122, 122, 122)" id="addr"></p>
-                                                <p id="hours" style="color: #5d7fa3"></p>
-                                                <p id="rating"></p>
-                                                <!-- TODO: display average COVID policy compliance rating from reviews-->
-                                                <p>COVID Policy Compliance: /5</p>
-                                                <!-- TODO: display latest reported capacity limit-->
-
-                                                <form action="{% url 'changed:specificreview' %}" , method="POST">
-                                                        {% csrf_token %}
-                                                        <input hidden id="readBusinessName" name="businessName" />
-                                                        <input hidden id="readPid" name="businessPid" />
-                                                        <button type="submit" class="btn"
-                                                                style="background-color:#5d7fa3; color:white">
-                                                                Read Reviews
-                                                        </button>
-                                                </form>
-                                                <!--button to write a review-->
-                                                <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
-                                                        aria-expanded="false" aria-controls="reviewform"
-                                                        style="background-color:#5d7fa3; color:white">
-                                                        Write Review
-                                                </a>
-
-                                                <div class="collapse" id="reviewform">
-                                                        <!--review form-->
-                                                    <form action="{% url 'changed:processreview' %}" ,
-                                                          method="post">
-                                                        {% csrf_token %}
-                                                        <input hidden id="businessName" name="businessName" />
-                                                        <input hidden id="pid" name="businessPid" />
-                                                        <div class="form-control">
-                                                        <div class="fieldWrapper">
-                                                            {{ form.covid_compliance_rating.errors }}
-                                                            {{ form.covid_compliance_rating.label_tag }}
-                                                            {{ form.covid_compliance_rating }}
-                                                        </div>
-                                                        <div class="fieldWrapper" style="width:200px">
-                                                            {{ form.capacity_limit.errors }}
-                                                            {{ form.capacity_limit.label_tag }}
-                                                            {{ form.capacity_limit }}
-                                                        </div> <br />
-                                                        <div class="form-group">
-                                                            <div class="fieldWrapper col-med-4 radio-inline">
-                                                                {{ form.indoor_dining.errors }}
-                                                                {{ form.indoor_dining.label_tag }}
-                                                                {{ form.indoor_dining }}
-                                                            </div>
-                                                            <div class="fieldWrapper col-med-4 radio-inline">
-                                                                {{ form.outdoor_dining.errors }}
-                                                                {{ form.outdoor_dining.label_tag }}
-                                                                {{ form.outdoor_dining }}
-                                                            </div>
-                                                            <div class="fieldWrapper col-med-4 radio-inline">
-                                                                {{ form.curbside_pickup.errors }}
-                                                                {{ form.curbside_pickup.label_tag }}
-                                                                {{ form.curbside_pickup }}
-                                                            </div>
-                                                            <div class="fieldWrapper col-med-4 radio-inline">
-                                                                {{ form.delivery.errors }}
-                                                                {{ form.delivery.label_tag }}
-                                                                {{ form.delivery }}
-                                                            </div>
-                                                        </div>
-                                                        <div class="fieldWrapper form" style="width:200px">
-                                                            {{ form.body.errors }}
-                                                            {{ form.body.label_tag }}<br />
-                                                            {{ form.body }}
-                                                        </div> <br />
-                                                        <button type="submit" , value="submit" ,
-                                                                class="btn btn-secondary">
-                                                            Submit
-                                                        </button>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                        </div>
-                                </div>
-                                <div style="display:none">
-                                        <!-- extraneous info, could be helpful for backend stuff-->
-                                        <p id="result"></p>
-                                        <p id="xCoord"></p>
-                                        <p id="yCoord"></p>
-                                </div>
-                        </div>
-
+                <input id="pac-input"
+                       class="controls"
+                       type="text"
+                       placeholder="Enter a location and click on the icon to view details" />
+                <div id="map" style="width:60vw; height: 80vh; margin-top:10px; margin-bottom: 10px;">
                 </div>
+                <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcKs56aiWAYfArUi4E_NH_2VZI2wrBshQ&callback=initMap&libraries=places&v=weekly"
+                        async></script>
+            </div>
+            <div class="col">
+                <!-- card containing business info and review form-->
+                <!--TODO: make card and its contents show up ONLY when we've clicked on a business (shouldn't show up when it's empty)-->
+                <div class="card" id="businessCard" style="margin:2vh">
+                    <h5 class="card-header text-center" style="font-weight: bold; color:#5d7fa3"
+                        id="name" name="name">
+                    </h5>
 
-                <!-- Optional JavaScript -->
-                <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-                        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-                        crossorigin="anonymous"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-                        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-                        crossorigin="anonymous"></script>
-                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                        crossorigin="anonymous"></script>
+                    <div class="card-body">
+                        <p style="color:rgb(122, 122, 122)" id="addr"></p>
+                        <p id="hours" style="color: #5d7fa3"></p>
+                        <p id="rating"></p>
+                        <!-- TODO: display average COVID policy compliance rating from reviews-->
+                        <div>
+                            <span id="covidName" style="display:none"></span>
+                            <p> COVID Policy Compliance: <span id="avg-rtg"></span>/5</p>
+                        </div>
+                        <!-- TODO: display latest reported capacity limit-->
+                        <form action="{% url 'changed:specificreview' %}" , method="POST">
+                            {% csrf_token %}
+                            <input hidden id="readBusinessName" name="businessName" />
+                            <input hidden id="readPid" name="businessPid" />
+                            <button type="submit" class="btn"
+                                    style="background-color:#5d7fa3; color:white">
+                                Read Reviews
+                            </button>
+                        </form>
+                        <!--button to write a review-->
+                        <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
+                           aria-expanded="false" aria-controls="reviewform"
+                           style="background-color:#5d7fa3; color:white">
+                            Write Review
+                        </a>
+
+                        <div class="collapse" id="reviewform">
+                            <!--review form-->
+                            <form action="{% url 'changed:processreview' %}" ,
+                                  method="post">
+                                {% csrf_token %}
+                                <input hidden id="busPid" name="businessPid" />
+                                <input hidden id="businessName" name="businessName" />
+                                <div class="form-control">
+                                    <div class="fieldWrapper">
+                                        {{ form.covid_compliance_rating.errors }}
+                                        {{ form.covid_compliance_rating.label_tag }}
+                                        {{ form.covid_compliance_rating }}
+                                    </div>
+                                    <div class="fieldWrapper" style="width:200px">
+                                        {{ form.capacity_limit.errors }}
+                                        {{ form.capacity_limit.label_tag }}
+                                        {{ form.capacity_limit }}
+                                    </div> <br />
+                                    <div class="form-group">
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ form.indoor_dining.errors }}
+                                            {{ form.indoor_dining.label_tag }}
+                                            {{ form.indoor_dining }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ form.outdoor_dining.errors }}
+                                            {{ form.outdoor_dining.label_tag }}
+                                            {{ form.outdoor_dining }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ form.curbside_pickup.errors }}
+                                            {{ form.curbside_pickup.label_tag }}
+                                            {{ form.curbside_pickup }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ form.delivery.errors }}
+                                            {{ form.delivery.label_tag }}
+                                            {{ form.delivery }}
+                                        </div>
+                                    </div>
+                                    <div class="fieldWrapper form" style="width:200px">
+                                        {{ form.body.errors }}
+                                        {{ form.body.label_tag }}<br />
+                                        {{ form.body }}
+                                    </div> <br />
+                                    <button type="submit" , value="submit" ,
+                                            class="btn btn-secondary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:none">
+                    <!-- extraneous info, could be helpful for backend stuff-->
+                    <p id="result"></p>
+                    <p id="xCoord"></p>
+                    <p id="yCoord"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="{% static 'js/app.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
 </body>
 
 {% endblock %}
