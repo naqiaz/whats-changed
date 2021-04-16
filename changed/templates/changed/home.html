@@ -135,7 +135,8 @@
                         },
                         dataType: 'json',
                         success: function (data) {
-                        $('#avg-rtg').text(data.rtg);
+                            $('#avg-rtg').text(data.rtg);
+                           // $('#notification').text(data.published_date);
                         }
                     });
                 }
@@ -147,6 +148,7 @@
                                 zoom: 15,
 
                         });
+                        //new infoEventHandler();
                         // Listener for when the user clicks on a place
                         map.addListener("click", (mapsMouseEvent) => {
                                 xy = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2) // string representation of the x and y coordinates
@@ -239,9 +241,62 @@
                         });
                         map.fitBounds(bounds);
                         });
+            }
+            function isIconMouseEvent(e) {
+                return "placeId" in e;
+            }
+            class infoEventHandler {
+                constructor(map) {
+                    this.map = map;
+                    this.placesService = new google.maps.places.PlacesService(map);
+                    this.infowindow = new google.maps.InfoWindow();
+                    this.infowindowContent = document.getElementById(
+                        "infowindow-content"
+                    );
+                    this.infowindow.setContent(this.infowindowContent);
+                    // Listen for clicks on the map.
+                    this.map.addListener("click", this.handleClick.bind(this));
                 }
+                handleClick(event) {
+                    if (isIconMouseEvent(event)) {
+                        event.stop();
 
-
+                        if (event.placeId) {
+                            this.getPlaceInformation(event.placeId);
+                        }
+                    }
+                }
+                getPlaceInformation(placeId) {
+                    const me = this;
+                    this.placesService.getDetails(
+                        { placeId: placeId },
+                        (place, status) => {
+                            if (
+                                status === "OK" &&
+                                place &&
+                                place.geometry &&
+                                place.geometry.location
+                            ) {
+                                me.infowindow.close();
+                                me.infowindow.setPosition(place.geometry.location);
+                                me.infowindow.open();
+                                var name = place.name;
+                                $.ajax({
+                                url: '/rating',
+                                 data: {
+                                   'name': name
+                                 },
+                                 dataType: 'json',
+                                 success: function (data) {
+                                  //$('#avg-rtg').text(data.rtg);
+                                   $('#notification').text(data.published_date);
+                                 }
+                                 }); 
+                                
+                            }
+                        });
+                     }
+            }
         </script>
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -265,6 +320,9 @@
                        type="text"
                        placeholder="Enter a location and click on the icon to view details" />
                 <div id="map" style="width:60vw; height: 80vh; margin-top:10px; margin-bottom: 10px;">
+                </div>
+                <div id="infowindow-content" style="display:none">
+                    <p id="notification"></p>
                 </div>
                 <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
                 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDcKs56aiWAYfArUi4E_NH_2VZI2wrBshQ&callback=initMap&libraries=places&v=weekly"
