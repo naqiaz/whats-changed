@@ -22,9 +22,23 @@ def index(request):
 
 def rating(request):
     name = request.GET['name']
-    business = Business.objects.get(business_name=name)
+    if (Business.objects.filter(business_name=name).exists()):
+        business = Business.objects.get(business_name=name)
+        rating = business.average_rating
+        business_info = business.businessinfo_set.all().order_by('-published_date')
+        business_info = business_info.first()
+        if (business_info != None):
+            published_date = business_info.published_date 
+            published_date = published_date.strftime('%Y-%m-%d %H:%M')
+            published_date = "Latest review: " + published_date
+        else:
+            published_date = "No reviews"
+    else:
+        rating = ""
+        published_date = "No reviews"
     data = {
-        'rtg': business.average_rating,
+        'rtg': rating,
+        'published_date':published_date,
     }
     return JsonResponse(data)
 
