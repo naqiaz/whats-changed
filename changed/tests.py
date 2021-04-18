@@ -5,6 +5,8 @@ from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply, ReplyForm, BusinessForm
 from http import HTTPStatus
 from .views import writeReview, reply
+import datetime
+
 client= Client()
 # Create your tests here.
 class AuthTestCase(TestCase):
@@ -49,7 +51,7 @@ class ReviewTestCase(TestCase):
         self.user = User.objects.create_user(username='test')
         
         login = self.client.login(username='testuser',password='password')
-        test_business = Business.objects.create(business_name = 'Test business', business_pid='', category= 'Test')
+        test_business = Business.objects.create(business_name = 'Test business', business_pid='', category= 'Test', average_rating=0)
         self.factory = RequestFactory()
         
 
@@ -75,6 +77,7 @@ class ReviewTestCase(TestCase):
             'outdoor_dining': False,
             'curbside_pickup': False,
             'delivery': False,
+            'published_date': datetime.datetime.now(),
             'body': '',
 
         })
@@ -89,8 +92,8 @@ class ReplyTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(username='test', password='password')
         login = self.client.login(username='testuser',password='password')
-        test_business = Business.objects.create(business_name = 'Test bussiness', business_pid='', category= 'Test')
-        test_business_info = BusinessInfo.objects.create(business = test_business, body= 'Test Review', user = self.user)
+        test_business = Business.objects.create(business_name = 'Test bussiness', business_pid='', category= 'Test', average_rating=0)
+        test_business_info = BusinessInfo.objects.create(business = test_business, body= 'Test Review', user = self.user, published_date=datetime.datetime.now())
         self.factory = RequestFactory()
     
     def test_writing_reply_to_a_review(self):

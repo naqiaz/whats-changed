@@ -3,13 +3,14 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django import forms
 from django.core.validators import MinValueValidator
+import datetime
 
 # Create your models here.
 
 class Business(models.Model):
     business_name = models.TextField()
     business_pid = models.TextField()
-    average_rating = models.FloatField()
+    average_rating = models.FloatField(default=0.0)
     category = models.CharField(max_length = 50)
     def __str__(self):
         return self.business_name
@@ -36,7 +37,7 @@ class BusinessInfo(models.Model):
     curbside_pickup = models.BooleanField(default=False)
     delivery = models.BooleanField(default=False)
     body = models.TextField(default="")
-    published_date = models.DateTimeField()
+    published_date = models.DateTimeField(default=datetime.datetime.now())
     def __str__(self):
         businessinfo = self.business.business_name + ' '+str(self.covid_compliance_rating)
         return businessinfo
@@ -58,6 +59,7 @@ class BusinessForm(forms.Form):
    curbside_pickup = forms.BooleanField(label="Curbside Pickup", required=False)
    delivery =forms.BooleanField(label="Delivery",required=False)
    body = forms.CharField(label="Additional Comments",widget=forms.Textarea,required=False)
+
 class ReplyForm(forms.Form):
     reply = forms.CharField(label="Reply", widget=forms.Textarea)
 
