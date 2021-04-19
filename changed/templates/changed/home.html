@@ -136,6 +136,7 @@
                         dataType: 'json',
                         success: function (data) {
                             $('#avg-rtg').text(data.rtg);
+                            $('#capacity').text(data.capacity_limit);
                            // $('#notification').text(data.published_date);
                         }
                     });
@@ -344,6 +345,7 @@
                         <div>
                             <span id="covidName" style="display:none"></span>
                             <p> COVID Policy Compliance: <span id="avg-rtg"></span>/5</p>
+                            <p> Current Capacity Limit: <span id="capacity"></span></p>
                         </div>
                         <!-- TODO: display latest reported capacity limit-->
                         <form action="{% url 'changed:specificreview' %}" , method="POST">

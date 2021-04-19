@@ -25,13 +25,16 @@ def rating(request):
     if (Business.objects.filter(business_name=name).exists()):
         business = Business.objects.get(business_name=name)
         rating = business.average_rating
+        rating = round(rating, 1)
         business_info = business.businessinfo_set.all().order_by('-published_date')
         business_info = business_info.first()
         if (business_info != None):
+            capacity_limit = business_info.capacity_limit
             published_date = business_info.published_date 
             published_date = published_date.strftime('%Y-%m-%d %H:%M')
             published_date = "Latest review: " + published_date
         else:
+            capacity_limit = "No reviews"
             published_date = "No reviews"
     else:
         rating = ""
@@ -39,6 +42,7 @@ def rating(request):
     data = {
         'rtg': rating,
         'published_date':published_date,
+        'capacity_limit':capacity_limit,
     }
     return JsonResponse(data)
 
@@ -116,11 +120,14 @@ def show_reviews(request):
         business_pid = request.POST['businessPid']
         if (Business.objects.filter(business_name=business_name,business_pid=business_pid).exists()):
             business = Business.objects.get(business_name=business_name,business_pid=business_pid)
+            avg_rating = business.average_rating
+            avg_rating = round(avg_rating,1)
             business_name = business.business_name
             business_info = business.businessinfo_set.all().order_by('-published_date')
             print(business_name) 
             context = {
             'business_name':business_name,
+            'avg_rating': avg_rating,
             'business_info':business_info,
             "business" : business,
             }
