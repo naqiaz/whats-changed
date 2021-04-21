@@ -11,56 +11,57 @@
             <small style="color:#5d7fa3">Click on a review to read and write comments.</small>
         </div>
     </div>
+    <div style="margin-bottom:60px">
+        {% for comment in business_info %}
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="list-group" style="width:70vw">
+                    <a href="{% url 'changed:replies' id=comment.id %}" class="list-group-item list-group-item-action"
+                        aria-current="false">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1" style="color:black">
+                                Covid Compliance Rating:
+                                {{comment.covid_compliance_rating}}
+                            </h5>
+                            <small>{{comment.user.username}}</small>
+                            <small>{{comment.published_date}}</small>
+                        </div>
+                        <p class="mb-1" style="color:#5d7fa3">
+                            indoor dining:
+                            {%if comment.indoor_dining == True %}
+                            &#10003;
+                            {% else %}
+                            &#10007;
+                            {% endif %},
+                            outdoor dining:
+                            {%if comment.indoor_dining == True %}
+                            &#10003;
+                            {% else %}
+                            &#10007;
+                            {% endif %}
+                        </p>
+                        <p class="mb-1" style="color:#5d7fa3">
+                            curbside pickup:
+                            {%if comment.curbside_pickup == True %}
+                            &#10003;
+                            {% else %}
+                            &#10007;
+                            {% endif %},
+                            delivery:
+                            {%if comment.delivery == True %}
+                            &#10003;
+                            {% else %}
+                            &#10007;
+                            {% endif %}
+                        </p>
+                        <p class="mb-1" style="color:#5d7fa3">capacity limit: {{comment.capacity_limit}}</p>
+                        <hr>
+                        <p class="mb-1" style="color:black">{{comment.body}}</p>
+                    </a>
 
-    {% for comment in business_info %}
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="list-group" style="width:70vw">
-                <a href="{% url 'changed:replies' id=comment.id %}" class="list-group-item list-group-item-action"
-                    aria-current="false">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1" style="color:black">
-                            Covid Compliance Rating:
-                            {{comment.covid_compliance_rating}}
-                        </h5>
-                        <small>{{comment.user.username}}</small>
-                        <small>{{comment.published_date}}</small>
-                    </div>
-                    <p class="mb-1" style="color:#5d7fa3">
-                        indoor dining:
-                        {%if comment.indoor_dining == True %}
-                        &#10003;
-                        {% else %}
-                        &#10007;
-                        {% endif %},
-                        outdoor dining:
-                        {%if comment.indoor_dining == True %}
-                        &#10003;
-                        {% else %}
-                        &#10007;
-                        {% endif %}
-                    </p>
-                    <p class="mb-1" style="color:#5d7fa3">
-                        curbside pickup:
-                        {%if comment.curbside_pickup == True %}
-                        &#10003;
-                        {% else %}
-                        &#10007;
-                        {% endif %},
-                        delivery:
-                        {%if comment.delivery == True %}
-                        &#10003;
-                        {% else %}
-                        &#10007;
-                        {% endif %}
-                    </p>
-                    <p class="mb-1" style="color:#5d7fa3">capacity limit: {{comment.capacity_limit}}</p>
-                    <hr>
-                    <p class="mb-1" style="color:black">{{comment.body}}</p>
-                </a>
-
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
 </body>
 {% endblock %}
