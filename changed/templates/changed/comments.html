@@ -17,7 +17,7 @@
             <div class="row justify-content-md-center">
                 <div class="list-group" style="width:70vw">
                     <a href="{% url 'changed:replies' id=comment.id %}" class="list-group-item list-group-item-action"
-                        aria-current="false">
+                       aria-current="false">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1" style="color:black">
                                 Covid Compliance Rating:
@@ -58,14 +58,71 @@
                         <hr>
                         <p class="mb-1" style="color:black">{{comment.body}}</p>
                         <div style="text-align: center;">
-                            <a href="#" class="btn btn-info" role="button"style="background-color: #5d7fa3; color:white"> Delete</a>
-                            <a href="#" class="btn btn-info" role="button"style="background-color: #5d7fa3; color:white"> Edit</a>
+                            <a href="{% url 'changed:delete_comment' business_name=business_name comment_id=comment.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
+                            <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
+                               aria-expanded="false" aria-controls="reviewform"
+                               style="background-color:#5d7fa3; color:white">
+                                Edit
+                            </a>
+                        </div>
+
+                        <div class="collapse" id="reviewform">
+                            <form action="{% url 'changed:edit_comment' business_name=business_name comment_id=comment.id %}" ,
+                                  method="post">
+                                {% csrf_token %}
+                                <div class="form-control">
+                                    <div class="fieldWrapper">
+                                        {{ editForm.covid_compliance_rating.errors }}
+                                        {{ editForm.covid_compliance_rating.label_tag }}
+                                        {{ editForm.covid_compliance_rating }}
+                                    </div>
+                                    <div class="fieldWrapper" style="width:200px">
+                                        {{ editForm.capacity_limit.errors }}
+                                        {{ editForm.capacity_limit.label_tag }}
+                                        {{ editForm.capacity_limit }}
+                                    </div> <br />
+                                    <div class="form-group">
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ editForm.indoor_dining.errors }}
+                                            {{ editForm.indoor_dining.label_tag }}
+                                            {{ editForm.indoor_dining }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ editForm.outdoor_dining.errors }}
+                                            {{ editForm.outdoor_dining.label_tag }}
+                                            {{ editForm.outdoor_dining }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ editForm.curbside_pickup.errors }}
+                                            {{ editForm.curbside_pickup.label_tag }}
+                                            {{ editForm.curbside_pickup }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ editForm.delivery.errors }}
+                                            {{ editForm.delivery.label_tag }}
+                                            {{ editForm.delivery }}
+                                        </div>
+                                    </div>
+                                    <div class="fieldWrapper form" style="width:200px">
+                                        {{ editForm.body.errors }}
+                                        {{ editForm.body.label_tag }}<br />
+                                        {{ editForm.body }}
+                                    </div> <br />
+                                    <button type="submit" , value="submit" ,
+                                            class="btn btn-secondary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </a>
-
                 </div>
                 {% endfor %}
             </div>
         </div>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
 </body>
 {% endblock %}

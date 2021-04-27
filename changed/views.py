@@ -59,43 +59,27 @@ def signup(request):
 
 
 def writeReview(request):
-    '''
-    TODO: Business = business_name, BusinessInfo = covid_compliance_rating
-    '''
     if request.method == 'POST':
         form = BusinessForm(request.POST)
         if form.is_valid():
             business_name = request.POST['businessName']
             business_pid = request.POST['businessPid']
-           # print(business_name)
-           # print(business_pid)
             covid_compliance_rating = form.cleaned_data['covid_compliance_rating']
-           # print(covid_compliance_rating)
             capacity_limit = form.cleaned_data['capacity_limit']
-           # print(capacity_limit)
             indoor_dining = form.cleaned_data['indoor_dining']
-           # print(indoor_dining)
             outdoor_dining = form.cleaned_data['outdoor_dining']
-           # print(outdoor_dining)
             curbside_pickup = form.cleaned_data['curbside_pickup']
-           # print(curbside_pickup)
             delivery = form.cleaned_data['delivery']
-           # print(delivery)
             body = form.cleaned_data['body']
-           # print(body)
             published_date = datetime.datetime.now()
             if(Business.objects.filter(business_name=business_name,business_pid=business_pid).exists()):
             #the business already exists, don't create a duplicate
-                print('The business already exists')
                 business = Business.objects.get(business_name=business_name,business_pid=business_pid)
                 user = User.objects.get(username=request.user.username)
                 business_info = BusinessInfo.objects.create(business=business,user=user, covid_compliance_rating=covid_compliance_rating,capacity_limit=capacity_limit,
                                                            indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body,
                                                            published_date = published_date)
                 business.average()
-                print(business_name)
-                #print(request.user.username)
-                print(body)
                 return HttpResponseRedirect(reverse('changed:index'))
             else:
                 business = Business.objects.create(business_name=business_name,business_pid=business_pid,average_rating=0)
@@ -104,9 +88,6 @@ def writeReview(request):
                                                            indoor_dining=indoor_dining,outdoor_dining=outdoor_dining, curbside_pickup=curbside_pickup,delivery=delivery,body = body,
                                                            published_date=published_date)
                 business.average()
-                print(business_name)
-                #print(user.username)
-                print(body)
                 return HttpResponseRedirect(reverse('changed:index'))
         return HttpResponseRedirect(reverse('changed:index'))
     else:
@@ -124,12 +105,13 @@ def show_reviews(request):
             avg_rating = round(avg_rating,1)
             business_name = business.business_name
             business_info = business.businessinfo_set.all().order_by('-published_date')
-            print(business_name) 
+            editForm = BusinessForm()
             context = {
             'business_name':business_name,
             'avg_rating': avg_rating,
             'business_info':business_info,
             "business" : business,
+            'editForm': editForm,
             }
             return render(request,'changed/comments.html',context)
         else:
@@ -156,12 +138,14 @@ def reply(request,id):
     #this page shows the respective profile and all of the user's reviews, when "profile" is clicked
         if (BusinessInfo.objects.filter(id=id).exists()):
             comment = BusinessInfo.objects.get(id=id)
-            replies = comment.reply_set.all().order_by('published_date') 
+            replies = comment.reply_set.all().order_by('-published_date') 
             form = ReplyForm()
+            editForm = ReplyForm()
             context = {
             'comment':comment,
             'replies':replies,
             'form':form,
+            'editForm':editForm,
             }
             if request.method == 'POST':
               form = ReplyForm(request.POST)
@@ -175,3 +159,82 @@ def reply(request,id):
         else:
             form = BusinessForm()
             return render(request,'changed/home.html',{'form':form})
+
+def delete_reply(request,comment_id, reply_id):
+    #this page shows the respective profile and all of the user's reviews, when "profile" is clicked
+        if (Reply.objects.filter(id=reply_id).exists()):
+            reply = Reply.objects.filter(id=reply_id).delete()
+        comment = BusinessInfo.objects.get(id=comment_id)
+        replies = comment.reply_set.all().order_by('-published_date')
+        form = ReplyForm()
+        editForm = ReplyForm()
+        context ={
+            'comment':comment,
+            'replies':replies,
+            'form':form,
+            'editForm':editForm
+             }
+        return render(request,'changed/replies.html',context)
+
+def edit_reply(request,comment_id, reply_id):
+    reply = Reply.objects.get(id=reply_id)
+    comment = BusinessInfo.objects.get(id=comment_id)
+    replies = comment.reply_set.all().order_by('-published_date')
+    editForm = ReplyForm()
+    form = ReplyForm()
+    context ={
+            'comment':comment,
+            'replies':replies,
+            'form':form,
+            'editForm':editForm,
+             }
+    if request.method == 'POST':
+       editForm = ReplyForm(request.POST)
+       if editForm.is_valid():
+          reply.body = editForm.cleaned_data['reply']
+          reply.save()
+    return render(request,'changed/replies.html',context)
+
+def delete_comment(request, business_name,comment_id):
+    #this page shows the respective profile and all of the user's reviews, when "profile" is clicked
+    if (BusinessInfo.objects.filter(id=comment_id).exists()):
+        BusinessInfo.objects.filter(id=comment_id).delete()
+    business = Business.objects.get(business_name=business_name)
+    business.average()
+    avg_rating = round(business.average_rating,1)
+    business_info = business.businessinfo_set.all().order_by('-published_date') 
+    context = {
+       'business_name':business_name,
+       'avg_rating': avg_rating,
+       'business_info':business_info,
+       'business' : business,
+    }
+    return render(request,'changed/comments.html',context)
+
+def edit_comment(request, business_name,comment_id):
+    comment = BusinessInfo.objects.get(id=comment_id)
+    business = Business.objects.get(business_name=business_name)
+    business_info = business.businessinfo_set.all().order_by('-published_date') 
+    if request.method == 'POST':
+        editForm = BusinessForm(request.POST)
+        if editForm.is_valid():
+            comment.covid_compliance_rating = editForm.cleaned_data['covid_compliance_rating']
+            comment.capacity_limit = editForm.cleaned_data['capacity_limit']
+            comment.indoor_dining = editForm.cleaned_data['indoor_dining']
+            comment.outdoor_dining = editForm.cleaned_data['outdoor_dining']
+            comment.curbside_pickup = editForm.cleaned_data['curbside_pickup']
+            comment.delivery = editForm.cleaned_data['delivery']
+            comment.body = editForm.cleaned_data['body']
+            comment.published_date = comment.published_date
+            comment.save()
+            business.average()
+    editForm = BusinessForm()
+    context = {
+       'business_name':business.business_name,
+       'avg_rating': business.average_rating,
+       'business_info':business_info,
+       'business' : business,
+       'editForm': editForm,
+    }
+    return render(request,'changed/comments.html',context)
+       

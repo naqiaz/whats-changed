@@ -15,5 +15,9 @@ urlpatterns = [
     path('reviews/',views.show_reviews,name='specificreview'),
     path('profile/<str:username>',views.profile,name='profile'),
     path('replies/<int:id>/',views.reply,name='replies'),
+    path('delete_reply/<int:comment_id>/<int:reply_id>',views.delete_reply,name='delete_reply'),
+    path('edit_reply/<int:comment_id>/<int:reply_id>',views.edit_reply,name='edit_reply'),
+    path('delete_comment/<str:business_name>/<int:comment_id>',views.delete_comment,name='delete_comment'),
+    path('edit_comment/<str:business_name>/<int:comment_id>',views.edit_comment,name='edit_comment'),
     path('rating/', views.rating, name='rating'),
 ]

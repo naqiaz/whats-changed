@@ -3,95 +3,122 @@
 {% block content %}
 
 
-<body>
+    <body>
 
-    <div class="container">
-        <div class="row justify-content-md-center">
-            <div class="card" style="width:70vw; margin:1vh">
-                <div class="d-flex w-100 justify-content-between">
-                    <div class="card-body">
-                        <h5 class="mb-1" style="color:black">
-                            Covid Compliance Rating:
-                            {{comment.covid_compliance_rating}}
-                        </h5>
-                        <small>{{comment.user.username}}, on </small>
-                        <small>{{comment.published_date}}</small>
-                        <hr>
-                        <p class="mb-1" style="color:#5d7fa3">
-                            indoor dining:
-                            {%if comment.indoor_dining == True %}
-                            &#10003;
-                            {% else %}
-                            &#10007;
-                            {% endif %},
-                            outdoor dining:
-                            {%if comment.indoor_dining == True %}
-                            &#10003;
-                            {% else %}
-                            &#10007;
-                            {% endif %}
-                        </p>
-                        <p class="mb-1" style="color:#5d7fa3">
-                            curbside pickup:
-                            {%if comment.curbside_pickup == True %}
-                            &#10003;
-                            {% else %}
-                            &#10007;
-                            {% endif %},
-                            delivery:
-                            {%if comment.delivery == True %}
-                            &#10003;
-                            {% else %}
-                            &#10007;
-                            {% endif %}
-                        </p>
-                        <p class="mb-1" style="color:#5d7fa3">capacity limit: {{comment.capacity_limit}}</p>
-                        <hr>
-                        <p class="mb-1" style="color:black">{{comment.body}}</p>
-                    </div>
-                </div>
-            </div>
-
-            {% for r in replies %}
-            <div class="container">
-                <div class="row justify-content-md-center">
-                    <div class="card" style="width:70vw; background-color: #f5f5f5;">
-                        <div class="card-header d-flex w-100 justify-content-between"
-                            style="background-color: #f5f5f5;">
-                            <small style="color:#3d3d3d; margin-right:10px">{{r.user.username}}</small>
-                            <small style="color:#3d3d3d; margin-right:10px">{{r.published_date}}</small>
-                        </div>
+        <div class="container">
+            <div class="row justify-content-md-center">
+                <div class="card" style="width:70vw; margin:1vh">
+                    <div class="d-flex w-100 justify-content-between">
                         <div class="card-body">
-                            <p class="mb-1" style="color:#3d3d3d">{{r.body}}</p>
-                        </div>
-                         <div style="text-align: center;">
-                            <a href="#" class="btn btn-info" role="button"style="background-color: #5d7fa3; color:white"> Delete</a>
-                            <a href="#" class="btn btn-info" role="button"style="background-color: #5d7fa3; color:white"> Edit</a>
+                            <h5 class="mb-1" style="color:black">
+                                Covid Compliance Rating:
+                                {{comment.covid_compliance_rating}}
+                            </h5>
+                            <small>{{comment.user.username}}, on </small>
+                            <small>{{comment.published_date}}</small>
+                            <hr>
+                            <p class="mb-1" style="color:#5d7fa3">
+                                indoor dining:
+                                {%if comment.indoor_dining == True %}
+                                &#10003;
+                                {% else %}
+                                &#10007;
+                                {% endif %},
+                                outdoor dining:
+                                {%if comment.indoor_dining == True %}
+                                &#10003;
+                                {% else %}
+                                &#10007;
+                                {% endif %}
+                            </p>
+                            <p class="mb-1" style="color:#5d7fa3">
+                                curbside pickup:
+                                {%if comment.curbside_pickup == True %}
+                                &#10003;
+                                {% else %}
+                                &#10007;
+                                {% endif %},
+                                delivery:
+                                {%if comment.delivery == True %}
+                                &#10003;
+                                {% else %}
+                                &#10007;
+                                {% endif %}
+                            </p>
+                            <p class="mb-1" style="color:#5d7fa3">capacity limit: {{comment.capacity_limit}}</p>
+                            <hr>
+                            <p class="mb-1" style="color:black">{{comment.body}}</p>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
 
-            <div class="card justify-content-md-center text-center"
-                style="width:70vw; margin-top:2vh; margin-bottom:60px">
-                <form action="{% url 'changed:replies' id=comment.id %}" , method="post">
-                    <div class="form-group">
-                        {% csrf_token %}
-                        <h5 class="card-header" style="background-color:#5d7fa3; color:white">Reply</h5>
-                        <div class="card-body">
-                            <div class="fieldWrapper" style="width:70vw;">
-                                {{ form.reply.errors }}
-                                {{ form.reply }}
+                {% for r in replies %}
+                <div class="container">
+                    <div class="row justify-content-md-center">
+                        <div class="card" style="width:70vw; background-color: #f5f5f5;">
+                            <div class="card-header d-flex w-100 justify-content-between"
+                                 style="background-color: #f5f5f5;">
+                                <small style="color:#3d3d3d; margin-right:10px">{{r.user.username}}</small>
+                                <small style="color:#3d3d3d; margin-right:10px">{{r.published_date}}</small>
                             </div>
-                            <small id="emailHelp" class="form-text text-muted">Write your reply above!</small>
+                            <div class="card-body">
+                                <p class="mb-1" style="color:#3d3d3d">{{r.body}}</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <a href="{% url 'changed:delete_reply' comment_id=comment.id reply_id=r.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
+                                <a class="btn btn-info" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
+                                   style="background-color:#5d7fa3; color:white">
+                                    Edit
+                                </a>
+                                <div class="collapse" id="collapseExample">
+                                        <form action="{% url 'changed:edit_reply' comment_id=comment.id reply_id=r.id %}" ,
+                                              method="post">
+                                            {% csrf_token %}
+                                            <input hidden id="busPid" name="businessPid" />
+                                            <input hidden id="businessName" name="businessName" />
+                                            <div class="form-control">
+                                                <div class="fieldWrapper">
+                                                    {{ editForm.reply.errors }}
+                                                    {{ editForm.reply }}
+                                                </div> 
+                                                <button type="submit" , value="submit" ,
+                                                        class="btn btn-secondary">
+                                                    Submit
+                                                </button>
+                                            </div>
+                                        </form>
+                                </div>
+                            </div>
                         </div>
-                        <button type="submit" , value="submit" , class="btn"
-                            style="background-color: #5d7fa3; color:white">Submit</button>
                     </div>
-                </form>
+                </div>
+                {% endfor %}
+
+                <div class="card justify-content-md-center text-center"
+                     style="width:70vw; margin-top:2vh; margin-bottom:60px">
+                    <form action="{% url 'changed:replies' id=comment.id %}" , method="post">
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <h5 class="card-header" style="background-color:#5d7fa3; color:white">Reply</h5>
+                            <div class="card-body">
+                                <div class="fieldWrapper" style="width:70vw;">
+                                    {{ form.reply.errors }}
+                                    {{ form.reply }}
+                                </div>
+                                <small id="emailHelp" class="form-text text-muted">Write your reply above!</small>
+                            </div>
+                            <button type="submit" , value="submit" , class="btn"
+                                    style="background-color: #5d7fa3; color:white">
+                                Submit
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-</body>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
+    </body>
 {% endblock %}
