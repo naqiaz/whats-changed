@@ -124,7 +124,6 @@ def profile(request,username):
             user = User.objects.get(username=username)
             username = user.username
             business_info = user.businessinfo_set.all().order_by('-published_date')
-            print(username) 
             context = {
             'user':user,
             'user_reviews':business_info,

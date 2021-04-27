@@ -11,12 +11,8 @@ def registerUser(request):
     registerUser goes hand-in-hand with signup. registerUser captures info from signup and adds the user to the database,
     then logs them in.
     '''
-
-    #TODO: Render an actual template instead of HTTPResponse
     username = request.POST['username']
     password = request.POST['password']
-    print(username)
-    print(password)
 
     verify = authenticate(username=username,password=password)
     if verify is not None:
@@ -32,14 +28,11 @@ def auth(request):
     #authenticates and logs in the user
     username = request.POST['username']
     password = request.POST['password']
-    print(username)
-    print(password)
 
     verify = authenticate(username=username,password=password)
     if verify is not None:
         #The user is in the database, log them in
         login(request,verify)
-        print("Logged in successfully")
         form = BusinessForm()
         context={
             'user':verify,

@@ -58,12 +58,14 @@
                         <hr>
                         <p class="mb-1" style="color:black">{{comment.body}}</p>
                         <div style="text-align: center;">
+                            {% if user.username == comment.user.username %}
                             <a href="{% url 'changed:delete_comment' business_name=business_name comment_id=comment.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
                             <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
                                aria-expanded="false" aria-controls="reviewform"
                                style="background-color:#5d7fa3; color:white">
                                 Edit
                             </a>
+                            {% endif %}
                         </div>
 
                         <div class="collapse" id="reviewform">

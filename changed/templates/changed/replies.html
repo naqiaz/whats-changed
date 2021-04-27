@@ -9,46 +9,46 @@
             <div class="row justify-content-md-center">
                 <div class="card" style="width:70vw; margin:1vh">
                     <div class="d-flex w-100 justify-content-between">
-                        <div class="card-body">
-                            <h5 class="mb-1" style="color:black">
-                                Covid Compliance Rating:
-                                {{comment.covid_compliance_rating}}
-                            </h5>
-                            <small>{{comment.user.username}}, on </small>
-                            <small>{{comment.published_date}}</small>
-                            <hr>
-                            <p class="mb-1" style="color:#5d7fa3">
-                                indoor dining:
-                                {%if comment.indoor_dining == True %}
-                                &#10003;
-                                {% else %}
-                                &#10007;
-                                {% endif %},
-                                outdoor dining:
-                                {%if comment.indoor_dining == True %}
-                                &#10003;
-                                {% else %}
-                                &#10007;
-                                {% endif %}
-                            </p>
-                            <p class="mb-1" style="color:#5d7fa3">
-                                curbside pickup:
-                                {%if comment.curbside_pickup == True %}
-                                &#10003;
-                                {% else %}
-                                &#10007;
-                                {% endif %},
-                                delivery:
-                                {%if comment.delivery == True %}
-                                &#10003;
-                                {% else %}
-                                &#10007;
-                                {% endif %}
-                            </p>
-                            <p class="mb-1" style="color:#5d7fa3">capacity limit: {{comment.capacity_limit}}</p>
-                            <hr>
-                            <p class="mb-1" style="color:black">{{comment.body}}</p>
-                        </div>
+                            <div class="card-body">
+                                <h5 class="mb-1" style="color:black">
+                                    Covid Compliance Rating:
+                                    {{comment.covid_compliance_rating}}
+                                </h5>
+                                <small>{{comment.user.username}}, on </small>
+                                <small>{{comment.published_date}}</small>
+                                <hr>
+                                <p class="mb-1" style="color:#5d7fa3">
+                                    indoor dining:
+                                    {%if comment.indoor_dining == True %}
+                                    &#10003;
+                                    {% else %}
+                                    &#10007;
+                                    {% endif %},
+                                    outdoor dining:
+                                    {%if comment.indoor_dining == True %}
+                                    &#10003;
+                                    {% else %}
+                                    &#10007;
+                                    {% endif %}
+                                </p>
+                                <p class="mb-1" style="color:#5d7fa3">
+                                    curbside pickup:
+                                    {%if comment.curbside_pickup == True %}
+                                    &#10003;
+                                    {% else %}
+                                    &#10007;
+                                    {% endif %},
+                                    delivery:
+                                    {%if comment.delivery == True %}
+                                    &#10003;
+                                    {% else %}
+                                    &#10007;
+                                    {% endif %}
+                                </p>
+                                <p class="mb-1" style="color:#5d7fa3">capacity limit: {{comment.capacity_limit}}</p>
+                                <hr>
+                                <p class="mb-1" style="color:black">{{comment.body}}</p>
+                            </div>
                     </div>
                 </div>
 
@@ -65,11 +65,13 @@
                                 <p class="mb-1" style="color:#3d3d3d">{{r.body}}</p>
                             </div>
                             <div style="text-align: center;">
+                                {% if user.username == r.user.username %}
                                 <a href="{% url 'changed:delete_reply' comment_id=comment.id reply_id=r.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
                                 <a class="btn btn-info" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
                                    style="background-color:#5d7fa3; color:white">
                                     Edit
                                 </a>
+                                {% endif %}
                                 <div class="collapse" id="collapseExample">
                                         <form action="{% url 'changed:edit_reply' comment_id=comment.id reply_id=r.id %}" ,
                                               method="post">
