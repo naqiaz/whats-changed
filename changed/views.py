@@ -7,6 +7,7 @@ from .models import Business, BusinessInfo, Reply
 from .models import BusinessForm, ReplyForm
 from django.views.generic import DetailView
 import datetime
+import pytz
 from django.http import JsonResponse
 
 
@@ -38,6 +39,7 @@ def rating(request):
             published_date = "No reviews"
     else:
         rating = ""
+        capacity_limit = "No reviews"
         published_date = "No reviews"
     data = {
         'rtg': rating,
@@ -71,7 +73,7 @@ def writeReview(request):
             curbside_pickup = form.cleaned_data['curbside_pickup']
             delivery = form.cleaned_data['delivery']
             body = form.cleaned_data['body']
-            published_date = datetime.datetime.now()
+            published_date = pytz.utc.localize(datetime.datetime.utcnow())
             if(Business.objects.filter(business_name=business_name,business_pid=business_pid).exists()):
             #the business already exists, don't create a duplicate
                 business = Business.objects.get(business_name=business_name,business_pid=business_pid)
@@ -151,7 +153,7 @@ def reply(request,id):
               if form.is_valid():
                 reply = form.cleaned_data['reply']
                 user = request.user
-                published_date = datetime.datetime.now()
+                published_date = pytz.utc.localize(datetime.datetime.utcnow())
                 
                 reply = Reply.objects.create(body=reply,comment=comment,user=user,published_date=published_date)
             return render(request,'changed/replies.html',context)   

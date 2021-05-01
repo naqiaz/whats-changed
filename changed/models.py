@@ -18,11 +18,12 @@ class Business(models.Model):
     def average(self):
         reviews = BusinessInfo.objects.filter(business=self)
         rating = 0
-        for r in reviews:
-            rating += r.covid_compliance_rating
-        rating = rating/len(reviews)
-        self.average_rating = rating
-        self.save()
+        if len(reviews) > 0:
+            for r in reviews:
+                rating += r.covid_compliance_rating
+            rating = rating/len(reviews)
+            self.average_rating = rating
+            self.save()
         return
 
 class BusinessInfo(models.Model):
