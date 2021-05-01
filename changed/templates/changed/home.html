@@ -116,10 +116,6 @@
                 var addrOutput = address;
                 var ratingOutput = "Rating: " + rated + "/5";
                 var hoursOutput = "Hours: " + hours;
-                // Display result
-                // document.getElementById("pid").innerHTML = pidOutput;
-                document.getElementById("readPid").innerHTML = pidOutput;
-                document.getElementById("busPid").innerHTML = addrOutput;
                 document.getElementById("name").innerHTML = nameOutput;   // name
                 document.getElementById("addr").innerHTML = addrOutput;   // address
                 document.getElementById("rating").innerHTML = ratingOutput;   // rating
@@ -127,17 +123,21 @@
                 document.getElementById("businessName").value = nameOutput;
                 document.getElementById("readBusinessName").value = nameOutput;
                 document.getElementById("covidName").value = nameOutput;
+                document.getElementById("pid").value = pidOutput;
                 var name = $('#covidName').val();
+                var pid = $('#pid').val();
                 $.ajax({
                         url: '/rating',
                         data: {
-                        'name':name
+                            'name': name,
+                            'pid':pid
                         },
                         dataType: 'json',
                         success: function (data) {
                             $('#avg-rtg').text(data.rtg);
                             $('#capacity').text(data.capacity_limit);
-                           // $('#notification').text(data.published_date);
+                            $('#readPid').val(data.pid);
+                            $('#busPid').val(data.pid);
                         }
                     });
                 }
@@ -342,13 +342,14 @@
                         <p style="color:rgb(122, 122, 122)" id="addr"></p>
                         <p id="hours" style="color: #5d7fa3"></p>
                         <p id="rating"></p>
-                        <!-- TODO: display average COVID policy compliance rating from reviews-->
+                        
                         <div>
                             <span id="covidName" style="display:none"></span>
+                            <span id="pid" style="display:none"></span>
                             <p> COVID Policy Compliance: <span id="avg-rtg"></span>/5</p>
                             <p> Current Capacity Limit: <span id="capacity"></span></p>
                         </div>
-                        <!-- TODO: display latest reported capacity limit-->
+                        
                         <form action="{% url 'changed:specificreview' %}" , method="POST">
                             {% csrf_token %}
                             <input hidden id="readBusinessName" name="businessName" />

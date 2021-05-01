@@ -23,8 +23,9 @@ def index(request):
 
 def rating(request):
     name = request.GET['name']
-    if (Business.objects.filter(business_name=name).exists()):
-        business = Business.objects.get(business_name=name)
+    pid = request.GET['pid']
+    if (Business.objects.filter(business_name=name,business_pid=pid).exists()):
+        business = Business.objects.get(business_name=name,business_pid=pid)
         rating = business.average_rating
         rating = round(rating, 1)
         business_info = business.businessinfo_set.all().order_by('-published_date')
@@ -42,6 +43,7 @@ def rating(request):
         capacity_limit = "No reviews"
         published_date = "No reviews"
     data = {
+        'pid':pid,
         'rtg': rating,
         'published_date':published_date,
         'capacity_limit':capacity_limit,
