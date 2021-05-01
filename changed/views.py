@@ -138,7 +138,6 @@ def profile(request,username):
             return render(request,'changed/home.html',{'form':form})  
 
 def reply(request,id):
-    #this page shows the respective profile and all of the user's reviews, when "profile" is clicked
         if (BusinessInfo.objects.filter(id=id).exists()):
             comment = BusinessInfo.objects.get(id=id)
             replies = comment.reply_set.all().order_by('-published_date') 
@@ -164,7 +163,6 @@ def reply(request,id):
             return render(request,'changed/home.html',{'form':form})
 
 def delete_reply(request,comment_id, reply_id):
-    #this page shows the respective profile and all of the user's reviews, when "profile" is clicked
         if (Reply.objects.filter(id=reply_id).exists()):
             reply = Reply.objects.filter(id=reply_id).delete()
         comment = BusinessInfo.objects.get(id=comment_id)
@@ -198,25 +196,24 @@ def edit_reply(request,comment_id, reply_id):
           reply.save()
     return render(request,'changed/replies.html',context)
 
-def delete_comment(request, business_name,comment_id):
-    #this page shows the respective profile and all of the user's reviews, when "profile" is clicked
+def delete_comment(request,business_pid,comment_id):
     if (BusinessInfo.objects.filter(id=comment_id).exists()):
         BusinessInfo.objects.filter(id=comment_id).delete()
-    business = Business.objects.get(business_name=business_name)
+    business = Business.objects.get(business_pid=business_pid)
     business.average()
     avg_rating = round(business.average_rating,1)
     business_info = business.businessinfo_set.all().order_by('-published_date') 
     context = {
-       'business_name':business_name,
+       'business_name':business.business_name,
        'avg_rating': avg_rating,
        'business_info':business_info,
        'business' : business,
     }
     return render(request,'changed/comments.html',context)
 
-def edit_comment(request, business_name,comment_id):
+def edit_comment(request,business_pid,comment_id):
     comment = BusinessInfo.objects.get(id=comment_id)
-    business = Business.objects.get(business_name=business_name)
+    business = Business.objects.get(business_pid=business_pid)
     business_info = business.businessinfo_set.all().order_by('-published_date') 
     if request.method == 'POST':
         editForm = BusinessForm(request.POST)

@@ -1,8 +1,6 @@
 {% extends 'changed/base_html.html' %}
 
 {% block content %}
-<!--Content goes here-->
-
 <body>
     <div style="margin-bottom:2vh">
         <h2 class="text-center">{{business_name}}</h2>
@@ -59,7 +57,7 @@
                         <p class="mb-1" style="color:black">{{comment.body}}</p>
                         <div style="text-align: center;">
                             {% if user.username == comment.user.username %}
-                            <a href="{% url 'changed:delete_comment' business_name=business_name comment_id=comment.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
+                            <a href="{% url 'changed:delete_comment' business_pid=business.business_pid comment_id=comment.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
                             <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
                                aria-expanded="false" aria-controls="reviewform"
                                style="background-color:#5d7fa3; color:white">
@@ -69,7 +67,7 @@
                         </div>
 
                         <div class="collapse" id="reviewform">
-                            <form action="{% url 'changed:edit_comment' business_name=business_name comment_id=comment.id %}" ,
+                            <form action="{% url 'changed:edit_comment' business_pid=business.business_pid comment_id=comment.id %}" ,
                                   method="post">
                                 {% csrf_token %}
                                 <div class="form-control">
