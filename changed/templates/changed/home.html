@@ -172,7 +172,6 @@
                                 placesService.getDetails(
                                         { placeId: place },
                                         function (results) {
-                                                // to see all place details in console, uncomment line below
                                                 var d = new Date()
                                                 updateBusiness(results.place_id, results.name, results.formatted_address, results.rating, results.opening_hours.weekday_text[(d.getDay() + 6) % 7])
                                         }
@@ -283,7 +282,6 @@
             </div>
             <div class="col">
                 <!-- card containing business info and review form-->
-                <!--TODO: make card and its contents show up ONLY when we've clicked on a business (shouldn't show up when it's empty)-->
                 <div class="card" id="businessCard" style="margin:2vh">
                     <h5 class="card-header text-center" style="font-weight: bold; color:#5d7fa3"
                         id="name" name="name">
