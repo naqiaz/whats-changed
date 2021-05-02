@@ -1,33 +1,39 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5d7fa3;">
+    <!--
+        REFERENCE:
+        Title: Bootstrap Navigation Bar
+        URL: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp
+        Bootstrap License: MIT
+     -->
     <div class="container-fluid">
         <a class="navbar-brand" style="color:white" href="{% url 'changed:index' %}">
             <img src="https://live.staticflickr.com/65535/50999956205_de401b87c1_o.png" width="30" height="30"
-                class="d-inline-block align-top">
+                 class="d-inline-block align-top">
             What's Changed?
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'changed:index' %}">Home<span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="{% url 'changed:about' %}">About<span class="sr-only">(current)</span></a>
                 </li>
                 {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'changed:index' %}">Home<span class="sr-only">(current)</span></a>
+                </li>
                 <li class="nav-item ">
                     <a class="nav-link" href="{% url 'changed:logout' %}">
                         Logout<span class="sr-only">(current)</span>
                     </a>
                 </li>
-
                 {% else %}
                 <li class="nav-item ">
                     <a class="nav-link" href="{% url 'changed:index' %}">Login<span class="sr-only">(current)</span></a>
@@ -43,8 +49,8 @@
                         {{user.username}} <span class="sr-only">(current)</span>
                     </a>
                 </div>
+            </ul>
         </div>
-        </ul>
 
         {% endif %}
     </div>

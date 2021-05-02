@@ -124,6 +124,13 @@
                 document.getElementById("readBusinessName").value = nameOutput;
                 document.getElementById("covidName").value = nameOutput;
                 document.getElementById("pid").value = pidOutput;
+                /***************************************************************************************************************
+                 * REFERENCE
+                 * Title: How to Work with Ajax Request with Django
+                 * Author: Vitor Freitas
+                 * URL: https://simpleisbetterthancomplex.com/tutorial/2016/08/29/how-to-work-with-ajax-request-with-django.html
+                 * JQuery License: MIT
+                 ***************************************************************************************************************/
                 var name = $('#covidName').val();
                 var pid = $('#pid').val();
                 $.ajax({
@@ -139,8 +146,8 @@
                             $('#readPid').val(data.pid);
                             $('#busPid').val(data.pid);
                         }
-                    });
-                }
+                });
+            }
                 let map;
 
                 function initMap() {
@@ -149,7 +156,6 @@
                                 zoom: 15,
 
                         });
-                        //new infoEventHandler();
                         // Listener for when the user clicks on a place
                         map.addListener("click", (mapsMouseEvent) => {
                                 xy = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2) // string representation of the x and y coordinates
@@ -243,61 +249,6 @@
                         map.fitBounds(bounds);
                         map.setZoom(20);
                         });
-            }
-            function isIconMouseEvent(e) {
-                return "placeId" in e;
-            }
-            class infoEventHandler {
-                constructor(map) {
-                    this.map = map;
-                    this.placesService = new google.maps.places.PlacesService(map);
-                    this.infowindow = new google.maps.InfoWindow();
-                    this.infowindowContent = document.getElementById(
-                        "infowindow-content"
-                    );
-                    this.infowindow.setContent(this.infowindowContent);
-                    // Listen for clicks on the map.
-                    this.map.addListener("click", this.handleClick.bind(this));
-                }
-                handleClick(event) {
-                    if (isIconMouseEvent(event)) {
-                        event.stop();
-
-                        if (event.placeId) {
-                            this.getPlaceInformation(event.placeId);
-                        }
-                    }
-                }
-                getPlaceInformation(placeId) {
-                    const me = this;
-                    this.placesService.getDetails(
-                        { placeId: placeId },
-                        (place, status) => {
-                            if (
-                                status === "OK" &&
-                                place &&
-                                place.geometry &&
-                                place.geometry.location
-                            ) {
-                                me.infowindow.close();
-                                me.infowindow.setPosition(place.geometry.location);
-                                me.infowindow.open();
-                                var name = place.name;
-                                $.ajax({
-                                url: '/rating',
-                                 data: {
-                                   'name': name
-                                 },
-                                 dataType: 'json',
-                                 success: function (data) {
-                                  //$('#avg-rtg').text(data.rtg);
-                                   $('#notification').text(data.published_date);
-                                 }
-                                 }); 
-                                
-                            }
-                        });
-                     }
             }
         </script>
         <!-- Required meta tags -->
