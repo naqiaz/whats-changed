@@ -54,6 +54,15 @@
                     <a href="{% url 'changed:signup' %}" style="color:rgb(81, 133, 168)">Click here to sign up</a>
                 </div>
             </div>
+            {% for message in messages %}
+
+                    <div class="alert alert-success">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+
+                        {{ message }}
+
+                    </div>
+            {% endfor %}
 
             <!-- Optional JavaScript -->
             <!-- jQuery first, then Popper.js, then Bootstrap JS -->

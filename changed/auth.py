@@ -6,6 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import BusinessForm
+from django.contrib import messages
 def registerUser(request):
     '''
     registerUser goes hand-in-hand with signup. registerUser captures info from signup and adds the user to the database,
@@ -42,6 +43,7 @@ def auth(request):
     else:
         #The user is not in the database. Register them by creating a new user and adding to the database
         #user = User.objects.create_user(username=username,password=password)
+        messages.error(request,'Invalid username or password')
         return redirect('changed:index')
 
 def logout(request):
