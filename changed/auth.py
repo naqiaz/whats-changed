@@ -30,6 +30,9 @@ def auth(request):
     username = request.POST['username']
     password = request.POST['password']
 
+    if len(username)==0 or len(password)==0 :
+        messages.error(request,'Please enter a non-blank username or password')
+        return redirect('changed:index')
     verify = authenticate(username=username,password=password)
     if verify is not None:
         #The user is in the database, log them in
