@@ -134,13 +134,13 @@ def show_reviews(request):
 def profile(request,username):
     # this page shows the respective profile and all of the user's reviews, when "profile" is clicked
         if (User.objects.filter(username=username).exists()):
-            user = User.objects.get(username=username)
-            username = user.username
+            user = request.user
             business_info = user.businessinfo_set.all().order_by('-published_date')
-            replies = user.reply_set.all().order_by('-published_date')
+            editForm = BusinessForm()
             context = {
             'user':user,
             'user_reviews':business_info,
+            'editForm':editForm,
             }
             return render(request,'changed/profile.html',context)
         else:
@@ -217,11 +217,13 @@ def delete_comment(request,business_pid,comment_id):
     business.average()
     avg_rating = round(business.average_rating,1)
     business_info = business.businessinfo_set.all().order_by('-published_date') 
+    editForm = BusinessForm()
     context = {
        'business_name':business.business_name,
        'avg_rating': avg_rating,
        'business_info':business_info,
        'business' : business,
+       'editForm' : editForm
     }
     return render(request,'changed/comments.html',context)
 
@@ -252,4 +254,48 @@ def edit_comment(request,business_pid,comment_id):
        'editForm': editForm,
     }
     return render(request,'changed/comments.html',context)
-       
+
+def delete_comment_prof(request,business_pid,comment_id):
+    # handles a request to delete a comment object from the profile page
+    if (BusinessInfo.objects.filter(id=comment_id).exists()):
+        BusinessInfo.objects.filter(id=comment_id).delete()
+        business = Business.objects.get(business_pid=business_pid)
+        business.average()
+    # After comment has been deleted, render the profile page
+    user = request.user
+    business_info = user.businessinfo_set.all().order_by('-published_date')
+    editForm = BusinessForm()
+    context = {
+            'user':user,
+            'user_reviews':business_info,
+            'editForm':editForm,
+            }
+    return render(request,'changed/profile.html',context)
+
+def edit_comment_prof(request,business_pid,comment_id):
+    # handles a request to update a comment object from the profile page
+    comment = BusinessInfo.objects.get(id=comment_id)
+    business = Business.objects.get(business_pid=business_pid)
+    if request.method == 'POST':
+        editForm = BusinessForm(request.POST)
+        if editForm.is_valid():
+            comment.covid_compliance_rating = editForm.cleaned_data['covid_compliance_rating']
+            comment.capacity_limit = editForm.cleaned_data['capacity_limit']
+            comment.indoor_dining = editForm.cleaned_data['indoor_dining']
+            comment.outdoor_dining = editForm.cleaned_data['outdoor_dining']
+            comment.curbside_pickup = editForm.cleaned_data['curbside_pickup']
+            comment.delivery = editForm.cleaned_data['delivery']
+            comment.body = editForm.cleaned_data['body']
+            comment.published_date = comment.published_date
+            comment.save()
+            business.average()
+    # After comment has been updated, render the profile page
+    user = request.user
+    business_info = user.businessinfo_set.all().order_by('-published_date')
+    editForm = BusinessForm()
+    context = {
+            'user':user,
+            'user_reviews':business_info,
+            'editForm':editForm,
+            }
+    return render(request,'changed/profile.html',context)  

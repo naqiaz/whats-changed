@@ -58,6 +58,13 @@
                         <div style="text-align: center;">
                             {% if user.username == comment.user.username %}
                             <a href="{% url 'changed:delete_comment' business_pid=business.business_pid comment_id=comment.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
+                            <!--
+                              -- REFERENCE
+                              -- Title: Collapse
+                              -- Bootstrap Version: 4.0
+                              -- URL: https://getbootstrap.com/docs/4.0/components/collapse/
+                              -- Bootstrap License: MIT
+                            -->
                             <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
                                aria-expanded="false" aria-controls="reviewform"
                                style="background-color:#5d7fa3; color:white">
@@ -120,6 +127,7 @@
                 {% endfor %}
             </div>
         </div>
+    </div>
         <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
                 integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"

@@ -67,28 +67,35 @@
                             <div style="text-align: center;">
                                 {% if user.username == r.user.username %}
                                 <a href="{% url 'changed:delete_reply' comment_id=comment.id reply_id=r.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
+                                <!--
+                                  -- REFERENCE
+                                  -- Title: Collapse
+                                  -- Bootstrap Version: 4.0
+                                  -- URL: https://getbootstrap.com/docs/4.0/components/collapse/
+                                  -- Bootstrap License: MIT
+                                  -->
                                 <a class="btn btn-info" role="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"
                                    style="background-color:#5d7fa3; color:white">
                                     Edit
                                 </a>
                                 {% endif %}
                                 <div class="collapse" id="collapseExample">
-                                        <form action="{% url 'changed:edit_reply' comment_id=comment.id reply_id=r.id %}" ,
-                                              method="post">
-                                            {% csrf_token %}
-                                            <input hidden id="busPid" name="businessPid" />
-                                            <input hidden id="businessName" name="businessName" />
-                                            <div class="form-control">
-                                                <div class="fieldWrapper">
-                                                    {{ editForm.reply.errors }}
-                                                    {{ editForm.reply }}
-                                                </div> 
-                                                <button type="submit" , value="submit" ,
-                                                        class="btn btn-secondary">
-                                                    Submit
-                                                </button>
+                                    <form action="{% url 'changed:edit_reply' comment_id=comment.id reply_id=r.id %}" ,
+                                          method="post">
+                                        {% csrf_token %}
+                                        <input hidden id="busPid" name="businessPid" />
+                                        <input hidden id="businessName" name="businessName" />
+                                        <div class="form-control">
+                                            <div class="fieldWrapper">
+                                                {{ editForm.reply.errors }}
+                                                {{ editForm.reply }}
                                             </div>
-                                        </form>
+                                            <button type="submit" , value="submit" ,
+                                                    class="btn btn-secondary">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>

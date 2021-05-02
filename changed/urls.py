@@ -17,5 +17,7 @@ urlpatterns = [
     path('edit_reply/<int:comment_id>/<int:reply_id>',views.edit_reply,name='edit_reply'),
     path('delete_comment/<str:business_pid>/<int:comment_id>',views.delete_comment,name='delete_comment'),
     path('edit_comment/<str:business_pid>/<int:comment_id>',views.edit_comment,name='edit_comment'),
+    path('delete_comment_prof/<str:business_pid>/<int:comment_id>',views.delete_comment_prof,name='delete_comment_prof'),
+    path('edit_comment_prof/<str:business_pid>/<int:comment_id>',views.edit_comment_prof,name='edit_comment_prof'),
     path('rating/', views.rating, name='rating'),
 ]
