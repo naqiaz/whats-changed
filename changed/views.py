@@ -79,7 +79,7 @@ def writeReview(request):
             curbside_pickup = form.cleaned_data['curbside_pickup']
             delivery = form.cleaned_data['delivery']
             body = form.cleaned_data['body']
-            published_date = datetime.now() + timedelta(hours=-4)
+            published_date = datetime.utcnow() + timedelta(hours=-4)
 
             # if the business exists do not create a duplicate
             if(Business.objects.filter(business_name=business_name,business_pid=business_pid).exists()):
@@ -165,7 +165,7 @@ def reply(request,id):
               if form.is_valid():
                 reply = form.cleaned_data['reply']
                 user = request.user
-                published_date = datetime.now() + timedelta(hours=-4)
+                published_date = datetime.utcnow() + timedelta(hours=-4)
                 reply = Reply.objects.create(body=reply,comment=comment,user=user,published_date=published_date)
             return render(request,'changed/replies.html',context)   
         else:
