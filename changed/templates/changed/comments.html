@@ -1,14 +1,12 @@
 {% extends 'changed/base_html.html' %}
 
 {% block content %}
-<!--Content goes here-->
-
 <body>
     <div style="margin-bottom:2vh">
         <h2 class="text-center">{{business_name}}</h2>
         <h5 class="text-center">Average COVID Compliance Rating: {{avg_rating}}</h5>
         <div class="text-center">
-            <small style="color:#5d7fa3">Click on a review to read and write comments.</small>
+            <p style="color:#5d7fa3">Click on a review to read and write comments.</p>
         </div>
     </div>
     <div style="margin-bottom:60px">
@@ -17,7 +15,7 @@
             <div class="row justify-content-md-center">
                 <div class="list-group" style="width:70vw">
                     <a href="{% url 'changed:replies' id=comment.id %}" class="list-group-item list-group-item-action"
-                        aria-current="false">
+                       aria-current="false">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1" style="color:black">
                                 Covid Compliance Rating:
@@ -34,7 +32,7 @@
                             &#10007;
                             {% endif %},
                             outdoor dining:
-                            {%if comment.indoor_dining == True %}
+                            {%if comment.outdoor_dining == True %}
                             &#10003;
                             {% else %}
                             &#10007;
@@ -57,11 +55,82 @@
                         <p class="mb-1" style="color:#5d7fa3">capacity limit: {{comment.capacity_limit}}</p>
                         <hr>
                         <p class="mb-1" style="color:black">{{comment.body}}</p>
-                    </a>
+                        <div style="text-align: center;">
+                            {% if user.username == comment.user.username %}
+                            <a href="{% url 'changed:delete_comment' business_pid=business.business_pid comment_id=comment.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
+                            <!--
+                              -- REFERENCE
+                              -- Title: Collapse
+                              -- Bootstrap Version: 4.0
+                              -- URL: https://getbootstrap.com/docs/4.0/components/collapse/
+                              -- Bootstrap License: MIT
+                            -->
+                            <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
+                               aria-expanded="false" aria-controls="reviewform"
+                               style="background-color:#5d7fa3; color:white">
+                                Edit
+                            </a>
+                            {% endif %}
+                        </div>
 
+                        <div class="collapse" id="reviewform">
+                            <form action="{% url 'changed:edit_comment' business_pid=business.business_pid comment_id=comment.id %}" ,
+                                  method="post">
+                                {% csrf_token %}
+                                <div class="form-control">
+                                    <div class="fieldWrapper">
+                                        {{ editForm.covid_compliance_rating.errors }}
+                                        {{ editForm.covid_compliance_rating.label_tag }}
+                                        {{ editForm.covid_compliance_rating }}
+                                    </div>
+                                    <div class="fieldWrapper" style="width:200px">
+                                        {{ editForm.capacity_limit.errors }}
+                                        {{ editForm.capacity_limit.label_tag }}
+                                        {{ editForm.capacity_limit }}
+                                    </div> <br />
+                                    <div class="form-group">
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ editForm.indoor_dining.errors }}
+                                            {{ editForm.indoor_dining.label_tag }}
+                                            {{ editForm.indoor_dining }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ editForm.outdoor_dining.errors }}
+                                            {{ editForm.outdoor_dining.label_tag }}
+                                            {{ editForm.outdoor_dining }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ editForm.curbside_pickup.errors }}
+                                            {{ editForm.curbside_pickup.label_tag }}
+                                            {{ editForm.curbside_pickup }}
+                                        </div>
+                                        <div class="fieldWrapper col-med-4 radio-inline">
+                                            {{ editForm.delivery.errors }}
+                                            {{ editForm.delivery.label_tag }}
+                                            {{ editForm.delivery }}
+                                        </div>
+                                    </div>
+                                    <div class="fieldWrapper form" style="width:200px">
+                                        {{ editForm.body.errors }}
+                                        {{ editForm.body.label_tag }}<br />
+                                        {{ editForm.body }}
+                                    </div> <br />
+                                    <button type="submit" , value="submit" ,
+                                            class="btn btn-secondary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </a>
                 </div>
                 {% endfor %}
             </div>
         </div>
+    </div>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+                crossorigin="anonymous"></script>
 </body>
 {% endblock %}

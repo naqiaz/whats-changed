@@ -2,7 +2,14 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5d7fa3;">
+    <!--
+        REFERENCE:
+        Title: Bootstrap Navigation Bar
+        URL: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp
+        Bootstrap License: MIT
+     -->
     <div class="container-fluid">
         <a class="navbar-brand" style="color:white" href="{% url 'changed:index' %}">
             <img src="https://live.staticflickr.com/65535/50999956205_de401b87c1_o.png" width="30" height="30"
@@ -15,38 +22,44 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'changed:index' %}">Home<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'changed:about' %}">About<span class="sr-only">(current)</span></a>
                 </li>
-                {% if user.is_authenticated %}
-                <li class="nav-item ">
-                    <a class="nav-link" href="{% url 'changed:logout' %}">
-                        Logout<span class="sr-only">(current)</span>
-                    </a>
-                </li>
-
                 {% else %}
-                <li class="nav-item ">
-                    <a class="nav-link" href="{% url 'changed:index' %}">Login<span class="sr-only">(current)</span></a>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'changed:about' %}">About<span class="sr-only">(current)</span></a>
                 </li>
                 {% endif %}
             </ul>
-        </div>
-        {% if user.is_authenticated %}
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <ul class="navbar-nav ml-auto">
-                <div style="margin-right:5px">
-                    <a class="nav-link" href="{% url 'changed:profile' username=user.username %}">
+            {% if user.is_authenticated %}
+            <!--
+              -- REFERENCE:
+              -- URL: https://www.codeply.com/go/qhaBrcWp3v
+              -- Bootstrap License: MIT
+              -->
+            <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'changed:profile' username=user.username %}"
+                        style="margin-right:4px">
                         {{user.username}} <span class="sr-only">(current)</span>
                     </a>
-                </div>
+                </li>
+                <li class="nav-item">
+                    <a type="button" class="btn btn-outline-light" href="{% url 'changed:logout' %}">Logout</a>
+                </li>
+            </ul>
+            {% else %}
+            <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
+                <li class="nav-item">
+                    <a type="button" class="btn btn-outline-light" href="{% url 'changed:index' %}">Login</a>
+                </li>
+            </ul>
+            {% endif %}
         </div>
-        </ul>
-
-        {% endif %}
     </div>
 </nav>
 {% block content %}

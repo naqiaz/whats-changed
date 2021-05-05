@@ -16,15 +16,113 @@
             </div>
             {% for review in user_reviews %}
             <div class="card mx-auto row justify-content-md-center" style="margin:1vh; width: 50vw">
-                <h5 class="card-header">{{review.business.business_name}}</h5> <!-- TODO: have date of review show up-->
+                <h4 class="card-header">{{review.business.business_name}}</h4>
                 <div class="card-body">
                     <p>COVID Compliance Rating: {{review.covid_compliance_rating}}/5</p>
-                    <p>Review: {{review.body}}</p>
+                    <p style="color:#5d7fa3">
+                        indoor dining:
+                        {%if review.indoor_dining == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %},
+                        outdoor dining:
+                        {%if review.outdoor_dining == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %}
+                        curbside pickup:
+                        {%if review.curbside_pickup == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %},
+                        delivery:
+                        {%if review.delivery == True %}
+                        &#10003;
+                        {% else %}
+                        &#10007;
+                        {% endif %}
+                    </p>
+                    <p style="color:#5d7fa3">capacity limit: {{review.capacity_limit}}</p>
+                    <hr>
+                    <p>{{review.body}}</p>
+
+                    <div style="text-align: center;">
+                        <a href="{% url 'changed:delete_comment_prof' business_pid=review.business.business_pid comment_id=review.id %}"
+                            class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white">
+                            Delete</a>
+                        <!--
+                          -- REFERENCE
+                          -- Title: Collapse
+                          -- Bootstrap Version: 4.0
+                          -- URL: https://getbootstrap.com/docs/4.0/components/collapse/
+                          -- Bootstrap License: MIT
+                        -->
+                        <a class="btn" data-toggle="collapse" href="#reviewform" role="button" aria-expanded="false"
+                            aria-controls="reviewform" style="background-color:#5d7fa3; color:white">
+                            Edit
+                        </a>
+                    </div>
+
+                    <div class="collapse" id="reviewform">
+                        <form
+                            action="{% url 'changed:edit_comment_prof' business_pid=review.business.business_pid comment_id=review.id %}"
+                            , method="post">
+                            {% csrf_token %}
+                            <div class="form-control">
+                                <div class="fieldWrapper">
+                                    {{ editForm.covid_compliance_rating.errors }}
+                                    {{ editForm.covid_compliance_rating.label_tag }}
+                                    {{ editForm.covid_compliance_rating }}
+                                </div>
+                                <div class="fieldWrapper" style="width:200px">
+                                    {{ editForm.capacity_limit.errors }}
+                                    {{ editForm.capacity_limit.label_tag }}
+                                    {{ editForm.capacity_limit }}
+                                </div> <br />
+                                <div class="form-group">
+                                    <div class="fieldWrapper col-med-4 radio-inline">
+                                        {{ editForm.indoor_dining.errors }}
+                                        {{ editForm.indoor_dining.label_tag }}
+                                        {{ editForm.indoor_dining }}
+                                    </div>
+                                    <div class="fieldWrapper col-med-4 radio-inline">
+                                        {{ editForm.outdoor_dining.errors }}
+                                        {{ editForm.outdoor_dining.label_tag }}
+                                        {{ editForm.outdoor_dining }}
+                                    </div>
+                                    <div class="fieldWrapper col-med-4 radio-inline">
+                                        {{ editForm.curbside_pickup.errors }}
+                                        {{ editForm.curbside_pickup.label_tag }}
+                                        {{ editForm.curbside_pickup }}
+                                    </div>
+                                    <div class="fieldWrapper col-med-4 radio-inline">
+                                        {{ editForm.delivery.errors }}
+                                        {{ editForm.delivery.label_tag }}
+                                        {{ editForm.delivery }}
+                                    </div>
+                                </div>
+                                <div class="fieldWrapper form" style="width:200px">
+                                    {{ editForm.body.errors }}
+                                    {{ editForm.body.label_tag }}<br />
+                                    {{ editForm.body }}
+                                </div> <br />
+                                <button type="submit" , value="submit" , class="btn btn-secondary">
+                                    Submit
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-
             {% endfor %}
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 {% endblock %}

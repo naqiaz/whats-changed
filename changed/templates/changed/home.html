@@ -4,14 +4,23 @@
 
 <head>
         <title>Home</title>
-        <!--Google Maps API: 
-        https://developers.google.com/maps/documentation/javascript/overview#maps_map_simple-html
-        https://developers.google.com/maps/documentation/javascript/examples/places-searchbox-->
+        <!--***************************************************************************************************************
+        * REFERENCE
+        * Title: Google Maps API: Simple Map
+        * URL: https://developers.google.com/maps/documentation/javascript/overview#maps_map_simple-html
+        * Software License: Apache 2.0 License
+        ***************************************************************************************************************/-->
+        <!--***************************************************************************************************************
+        * REFERENCE
+        * Title: Google Maps API: Places Searchbox
+        * URL:  https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
+        * Software License: Apache 2.0 License
+        ***************************************************************************************************************/-->
 
         <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
         <style type="text/css">
                 /* Always set the map height explicitly to define the size of the div
-        * element that contains the map. */
+                   element that contains the map. */
                 #map {
                         height: 100%;
                 }
@@ -116,10 +125,6 @@
                 var addrOutput = address;
                 var ratingOutput = "Rating: " + rated + "/5";
                 var hoursOutput = "Hours: " + hours;
-                // Display result
-                // document.getElementById("pid").innerHTML = pidOutput;
-                document.getElementById("readPid").innerHTML = pidOutput;
-                document.getElementById("busPid").innerHTML = addrOutput;
                 document.getElementById("name").innerHTML = nameOutput;   // name
                 document.getElementById("addr").innerHTML = addrOutput;   // address
                 document.getElementById("rating").innerHTML = ratingOutput;   // rating
@@ -127,20 +132,31 @@
                 document.getElementById("businessName").value = nameOutput;
                 document.getElementById("readBusinessName").value = nameOutput;
                 document.getElementById("covidName").value = nameOutput;
+                document.getElementById("pid").value = pidOutput;
+                /***************************************************************************************************************
+                 * REFERENCE
+                 * Title: How to Work with Ajax Request with Django
+                 * Author: Vitor Freitas
+                 * URL: https://simpleisbetterthancomplex.com/tutorial/2016/08/29/how-to-work-with-ajax-request-with-django.html
+                 * JQuery License: MIT
+                 ***************************************************************************************************************/
                 var name = $('#covidName').val();
+                var pid = $('#pid').val();
                 $.ajax({
                         url: '/rating',
                         data: {
-                        'name':name
+                            'name': name,
+                            'pid':pid
                         },
                         dataType: 'json',
                         success: function (data) {
                             $('#avg-rtg').text(data.rtg);
                             $('#capacity').text(data.capacity_limit);
-                           // $('#notification').text(data.published_date);
+                            $('#readPid').val(data.pid);
+                            $('#busPid').val(data.pid);
                         }
-                    });
-                }
+                });
+            }
                 let map;
 
                 function initMap() {
@@ -149,7 +165,6 @@
                                 zoom: 15,
 
                         });
-                        //new infoEventHandler();
                         // Listener for when the user clicks on a place
                         map.addListener("click", (mapsMouseEvent) => {
                                 xy = JSON.stringify(mapsMouseEvent.latLng.toJSON(), null, 2) // string representation of the x and y coordinates
@@ -166,7 +181,6 @@
                                 placesService.getDetails(
                                         { placeId: place },
                                         function (results) {
-                                                // to see all place details in console, uncomment line below
                                                 var d = new Date()
                                                 updateBusiness(results.place_id, results.name, results.formatted_address, results.rating, results.opening_hours.weekday_text[(d.getDay() + 6) % 7])
                                         }
@@ -241,62 +255,8 @@
                         }
                         });
                         map.fitBounds(bounds);
+                        map.setZoom(20);
                         });
-            }
-            function isIconMouseEvent(e) {
-                return "placeId" in e;
-            }
-            class infoEventHandler {
-                constructor(map) {
-                    this.map = map;
-                    this.placesService = new google.maps.places.PlacesService(map);
-                    this.infowindow = new google.maps.InfoWindow();
-                    this.infowindowContent = document.getElementById(
-                        "infowindow-content"
-                    );
-                    this.infowindow.setContent(this.infowindowContent);
-                    // Listen for clicks on the map.
-                    this.map.addListener("click", this.handleClick.bind(this));
-                }
-                handleClick(event) {
-                    if (isIconMouseEvent(event)) {
-                        event.stop();
-
-                        if (event.placeId) {
-                            this.getPlaceInformation(event.placeId);
-                        }
-                    }
-                }
-                getPlaceInformation(placeId) {
-                    const me = this;
-                    this.placesService.getDetails(
-                        { placeId: placeId },
-                        (place, status) => {
-                            if (
-                                status === "OK" &&
-                                place &&
-                                place.geometry &&
-                                place.geometry.location
-                            ) {
-                                me.infowindow.close();
-                                me.infowindow.setPosition(place.geometry.location);
-                                me.infowindow.open();
-                                var name = place.name;
-                                $.ajax({
-                                url: '/rating',
-                                 data: {
-                                   'name': name
-                                 },
-                                 dataType: 'json',
-                                 success: function (data) {
-                                  //$('#avg-rtg').text(data.rtg);
-                                   $('#notification').text(data.published_date);
-                                 }
-                                 }); 
-                                
-                            }
-                        });
-                     }
             }
         </script>
         <!-- Required meta tags -->
@@ -331,7 +291,6 @@
             </div>
             <div class="col">
                 <!-- card containing business info and review form-->
-                <!--TODO: make card and its contents show up ONLY when we've clicked on a business (shouldn't show up when it's empty)-->
                 <div class="card" id="businessCard" style="margin:2vh">
                     <h5 class="card-header text-center" style="font-weight: bold; color:#5d7fa3"
                         id="name" name="name">
@@ -341,13 +300,14 @@
                         <p style="color:rgb(122, 122, 122)" id="addr"></p>
                         <p id="hours" style="color: #5d7fa3"></p>
                         <p id="rating"></p>
-                        <!-- TODO: display average COVID policy compliance rating from reviews-->
+                        
                         <div>
                             <span id="covidName" style="display:none"></span>
+                            <span id="pid" style="display:none"></span>
                             <p> COVID Policy Compliance: <span id="avg-rtg"></span>/5</p>
                             <p> Current Capacity Limit: <span id="capacity"></span></p>
                         </div>
-                        <!-- TODO: display latest reported capacity limit-->
+                        
                         <form action="{% url 'changed:specificreview' %}" , method="POST">
                             {% csrf_token %}
                             <input hidden id="readBusinessName" name="businessName" />

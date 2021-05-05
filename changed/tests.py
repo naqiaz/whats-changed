@@ -78,14 +78,14 @@ class ReviewTestCase(TestCase):
             'curbside_pickup': False,
             'delivery': False,
             'published_date': datetime.datetime.now(),
-            'body': '',
+            'body': 'Great',
 
         })
         request.user = self.user
         response = writeReview(request)
         
         self.assertEqual(response.status_code,302)
-        self.assertTrue(BusinessInfo.objects.filter(business = business, user = request.user, body = '').exists())
+        self.assertTrue(BusinessInfo.objects.filter(business = business, user = request.user, body = 'Great').exists())
 
 
 class ReplyTestCase(TestCase):
