@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply, ReplyForm, BusinessForm
 from http import HTTPStatus
-from .views import writeReview, reply, edit_comment, edit_reply
+from .views import writeReview, reply, edit_comment, edit_reply, delete_reply
 from datetime import datetime, timedelta
 
 client = Client()
@@ -233,6 +233,34 @@ class EditReplyTestCase(TestCase):
         reply = Reply.objects.get(id=reply_id)
         self.assertEqual(reply.body, 'Another test reply')
         self.assertEqual(reply.comment, comment)
+
+class DeleteReplyTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='password')
+        login = self.client.login(username='testuser',password='password')
+        test_business = Business.objects.create(business_name = 'Test business', business_pid='sample_business', category= 'Test', average_rating=0)
+        test_business_info = BusinessInfo.objects.create(business = test_business, body= 'Test Review', user = self.user, published_date=datetime.utcnow() + timedelta(hours=-4))
+        test_reply = Reply.objects.create(user=self.user, comment=test_business_info,body='Test Reply', published_date=datetime.utcnow() + timedelta(hours=-4))
+        self.factory = RequestFactory()
+    
+    def test_deletingReply(self):
+        business = Business.objects.get(business_name='Test business', business_pid='sample_business')
+        comment = BusinessInfo.objects.get(business = business, user = self.user, body='Test Review')
+        comment_id = comment.id
+        reply = Reply.objects.get(user=self.user, comment=comment,body='Test Reply')
+        reply_id = reply.id
+
+        url = '/delete_reply/' + str(comment_id) +'/' + str(reply_id) + '/'
+
+        request = RequestFactory().post('url',{
+            'reply': 'Another test reply',
+        })
+        request.user = self.user
+        response = delete_reply(request, comment_id, reply_id)
+        
+        self.assertFalse(Reply.objects.filter(user=self.user, comment=comment,body='Test Reply').exists())
+        self.assertEqual(response.status_code,200)
+        
 
 
         
