@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout as auth_logout
 from .models import Business, BusinessInfo, Reply, ReplyForm, BusinessForm
 from http import HTTPStatus
-from .views import writeReview, reply, edit_comment, edit_reply, delete_reply
+from .views import writeReview, reply, edit_comment, edit_reply, delete_reply, delete_comment
 from datetime import datetime, timedelta
 
 client = Client()
@@ -260,6 +260,41 @@ class DeleteReplyTestCase(TestCase):
         
         self.assertFalse(Reply.objects.filter(user=self.user, comment=comment,body='Test Reply').exists())
         self.assertEqual(response.status_code,200)
+
+class DeleteCommentTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='test', password='password')
+        login = self.client.login(username='testuser',password='password')
+        test_business = Business.objects.create(business_name = 'Test business', business_pid='sample_business', category= 'Test', average_rating=0)
+        test_business_info = BusinessInfo.objects.create(business = test_business, body= 'Test Review', user = self.user, published_date=datetime.utcnow() + timedelta(hours=-4))
+        self.factory = RequestFactory()
+
+    def test_deletingReply(self):
+        # delete_comment(request,business_pid,comment_id)
+        business = Business.objects.get(business_name='Test business', business_pid='sample_business')
+        comment = BusinessInfo.objects.get(business = business, user = self.user, body='Test Review')
+        comment_id = comment.id
+        businessPid = business.business_pid
+
+        url = '/delete_comment/' + str(businessPid) +'/' + str(comment_id) + '/'
+
+        request = RequestFactory().post('url',{
+            'businessName': business.business_name,
+            'businessPid': business.business_pid,
+            'covid_compliance_rating': comment.covid_compliance_rating ,
+            'capacity_limit': comment.capacity_limit,
+            'indoor_dining': False,
+            'outdoor_dining': False,
+            'curbside_pickup': False,
+            'delivery': False,
+            'body': 'Test Review',
+        })
+        request.user = self.user
+        response = delete_comment(request, businessPid, comment_id)
+        
+        self.assertFalse(BusinessInfo.objects.filter(user=self.user, business=business, body = 'Test Review').exists())
+        self.assertEqual(response.status_code,200)
+
         
 
 
