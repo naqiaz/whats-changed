@@ -1,6 +1,7 @@
 {% extends 'changed/base_html.html' %}
 
 {% block content %}
+
 <body>
     <div style="margin-bottom:2vh">
         <h2 class="text-center">{{business_name}}</h2>
@@ -15,7 +16,7 @@
             <div class="row justify-content-md-center">
                 <div class="list-group" style="width:70vw">
                     <a href="{% url 'changed:replies' id=comment.id %}" class="list-group-item list-group-item-action"
-                       aria-current="false">
+                        aria-current="false">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1" style="color:black">
                                 Covid Compliance Rating:
@@ -55,27 +56,35 @@
                         <p class="mb-1" style="color:#5d7fa3">capacity limit: {{comment.capacity_limit}}</p>
                         <hr>
                         <p class="mb-1" style="color:black">{{comment.body}}</p>
-                        <div style="text-align: center;">
-                            {% if user.username == comment.user.username %}
-                            <a href="{% url 'changed:delete_comment' business_pid=business.business_pid comment_id=comment.id %}" class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white"> Delete</a>
-                            <!--
-                              -- REFERENCE
-                              -- Title: Collapse
-                              -- Bootstrap Version: 4.0
-                              -- URL: https://getbootstrap.com/docs/4.0/components/collapse/
-                              -- Bootstrap License: MIT
-                            -->
-                            <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
-                               aria-expanded="false" aria-controls="reviewform"
-                               style="background-color:#5d7fa3; color:white">
-                                Edit
-                            </a>
-                            {% endif %}
-                        </div>
+                        <hr>
+                        {% if user.username == comment.user.username %}
+                        <table>
+                            <tr>
+                                <a class="btn btn-info center-align"
+                                    href="{% url 'changed:delete_comment' business_pid=business.business_pid comment_id=comment.id %}"
+                                    role="button"
+                                    style="background-color: #5d7fa3; color:white; width:100px; margin-right:2vw">
+                                    Delete</a>
+                                <!--
+                                  -- REFERENCE
+                                  -- Title: Collapse
+                                  -- Bootstrap Version: 4.0
+                                  -- URL: https://getbootstrap.com/docs/4.0/components/collapse/
+                                  -- Bootstrap License: MIT
+                                -->
+                                <a class="btn" data-toggle="collapse" href="#reviewform" role="button"
+                                    aria-expanded="false" aria-controls="reviewform"
+                                    style="background-color:#5d7fa3; color:white; width:100px;">
+                                    Edit
+                                </a>
+                            </tr>
+                        </table>
 
+                        {% endif %}
                         <div class="collapse" id="reviewform">
-                            <form action="{% url 'changed:edit_comment' business_pid=business.business_pid comment_id=comment.id %}" ,
-                                  method="post">
+                            <form
+                                action="{% url 'changed:edit_comment' business_pid=business.business_pid comment_id=comment.id %}"
+                                , method="post">
                                 {% csrf_token %}
                                 <div class="form-control">
                                     <div class="fieldWrapper">
@@ -115,8 +124,7 @@
                                         {{ editForm.body.label_tag }}<br />
                                         {{ editForm.body }}
                                     </div> <br />
-                                    <button type="submit" , value="submit" ,
-                                            class="btn btn-secondary">
+                                    <button type="submit" , value="submit" , class="btn btn-secondary">
                                         Submit
                                     </button>
                                 </div>
@@ -128,9 +136,9 @@
             </div>
         </div>
     </div>
-        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-                integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-                crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
 </body>
 {% endblock %}
