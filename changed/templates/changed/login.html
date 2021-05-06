@@ -16,11 +16,25 @@
 <body class="d-flex flex-column min-vh-100">
     <div class="wrapper flex-grow-1">
         <div class="container">
+            <!--
+               -- REFERENCE
+               -- Title: Bootstrap Card
+               -- Bootstrap Version: Bootstrap 4.0
+               -- URL: https://getbootstrap.com/docs/4.0/components/card/
+               -- Bootstrap License: MIT
+            -->
             <!--You can only already be authenticated if you're using Google-->
             <div class="card bg-light mx-auto row justify-content-md-center" style="margin: 4vh; width: 30vw;">
                 <div class=" card-header text-center" style="background-color: rgb(151, 151, 151); color:white">
                     Login to access your account:
                 </div>
+                <!--
+                -- REFERENCE
+                -- Title: Bootstrap Form
+                -- Bootstrap Version: Bootstrap 4.0
+                -- URL: https://getbootstrap.com/docs/4.0/components/forms/
+                -- Bootstrap License: MIT
+                -->
                 <form action="{% url 'changed:authenticate'%}" , method="POST" class="text-center"
                     style="margin-top:15px; margin-bottom: 15px;">
                     {% csrf_token %}

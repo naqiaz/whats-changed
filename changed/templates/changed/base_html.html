@@ -5,10 +5,11 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #5d7fa3;">
     <!--
-        REFERENCE:
-        Title: Bootstrap Navigation Bar
-        URL: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp
-        Bootstrap License: MIT
+      -- REFERENCE
+      -- title: Bootstrap Navigation Bar
+      -- Bootstrap Version: Bootstrap 4.0
+      -- URL: https://www.w3schools.com/bootstrap/bootstrap_navbar.asp
+      -- Bootstrap License: MIT
      -->
     <div class="container-fluid">
         <a class="navbar-brand" style="color:white" href="{% url 'changed:index' %}">
@@ -48,6 +49,13 @@
                         {{user.username}} <span class="sr-only">(current)</span>
                     </a>
                 </li>
+                <!--
+                  -- REFERENCE
+                  -- Title: Bootstrap Buttons
+                  -- Bootstrap Version: Bootstrap 4.0
+                  -- URL: https://getbootstrap.com/docs/4.0/components/buttons/
+                  -- Bootstrap License: MIT
+                -->
                 <li class="nav-item">
                     <a type="button" class="btn btn-outline-light" href="{% url 'changed:logout' %}">Logout</a>
                 </li>
@@ -64,6 +72,14 @@
 </nav>
 {% block content %}
 {% endblock %}
+
+<!--
+-- REFERENCE
+-- Title: MDBootstrap Footer
+-- Software Version: MDBootstrap 5.0
+-- URL: https://mdbootstrap.com/docs/standard/navigation/footer/
+-- MDBootstrap License: MIT
+-->
 
 <footer class="bg-light text-center text-lg-start fixed-bottom">
     <div class="text-center p-3" style="background-color:#5d7fa3; color:white">
