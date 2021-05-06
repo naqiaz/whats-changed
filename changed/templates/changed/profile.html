@@ -58,7 +58,7 @@
 
                     <div style="text-align: center;">
                         <a href="{% url 'changed:delete_comment_prof' business_pid=review.business.business_pid comment_id=review.id %}"
-                            class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white">
+                            class="btn btn-info" role="button" style="background-color: #5d7fa3; color:white" onclick="clicked(event)">
                             Delete</a>
                         <!--
                           -- REFERENCE
@@ -127,6 +127,15 @@
             {% endfor %}
         </div>
     </div>
+    <script>
+        function clicked(e)
+        {
+            if(!confirm('Are you sure?'))
+            {
+                e.preventDefault();
+            }
+        }
+    </script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
