@@ -63,7 +63,7 @@
                                 <a class="btn btn-info center-align"
                                     href="{% url 'changed:delete_comment' business_pid=business.business_pid comment_id=comment.id %}"
                                     role="button"
-                                    style="background-color: #5d7fa3; color:white; width:100px; margin-right:2vw">
+                                    style="background-color: #5d7fa3; color:white; width:100px; margin-right:2vw" onclick="clicked(event)">
                                     Delete</a>
                                 <!--
                                   -- REFERENCE
@@ -136,6 +136,15 @@
             </div>
         </div>
     </div>
+    <script>
+        function clicked(e)
+        {
+            if(!confirm('Are you sure?'))
+            {
+                e.preventDefault();
+            }
+        }
+    </script>
     <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
